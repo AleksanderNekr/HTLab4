@@ -5,16 +5,18 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
-        private static void ReadSize(out int n)
+        private static void ReadSize(out uint n)
         {
             const string messageInput = "Введите количество элементов: ";
             const string messageSuccess = "Успешно введено количество элементов!";
-            const string messageFail = "Ошибка! Введено нецелое число или строка!";
+            const string messageFail = "Ошибка! Введено нецелое число, " +
+                                       "или целое, но меньше 0, или строка!";
             Console.Write(messageInput);
             bool isCorrect;
             do
             {
-                isCorrect = int.TryParse(Console.ReadLine(), out n);
+                isCorrect = uint.TryParse(Console.ReadLine(), out n);
+
                 Console.WriteLine(isCorrect
                     ? messageSuccess
                     : messageFail);
@@ -60,7 +62,7 @@ namespace HT_Lab4_26_30
             Console.WriteLine();
         }
 
-        private static double AverageOfArray(IReadOnlyCollection<double> arr)
+        private static double Average(IReadOnlyCollection<double> arr)
         {
             double sum = 0;
             foreach (var element in arr)
@@ -138,22 +140,26 @@ namespace HT_Lab4_26_30
             var arr = new double[n];
 
             ChooseMethodToFillArray(arr);
-            Console.WriteLine("Конец ввода массива чисел");
 
-            Console.Write("Вывод массива: ");
+            Console.WriteLine("Массив:");
             WriteArray(arr);
-            var average = AverageOfArray(arr);
+
+            var average = Average(arr);
             arr = arr.DeleteElemsGreaterThanNum(average);
-            Console.Write("Массив после удаления из него элементов, больших " +
-                              $"среднего арифметического элементов массива ({average}): ");
+            Console.WriteLine("Массив после удаления из него элементов, больших " +
+                              $"среднего арифметического элементов массива ({average}):");
             WriteArray(arr);
 
             Console.WriteLine("Ввод дополнительных элементов к массиву");
             ReadSize(out var k);
             var arrAdditional = new double[k];
             ChooseMethodToFillArray(arrAdditional);
+            Console.WriteLine("Конец ввода дополнительных элементов");
+
+            Console.WriteLine("Дополнительные элементы:");
             WriteArray(arrAdditional);
             arr = ConcatArrays(arr, arrAdditional);
+            Console.WriteLine("Массив после добавления в него дополнительных элементов:");
             WriteArray(arr);
         }
     }
