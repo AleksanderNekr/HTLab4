@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HTLab4_26_30
+namespace HT_Lab4_26_30
 {
     internal static class Program
     {
-        private static void ReadSize(out Int32 n)
+        private static void ReadSize(out int n)
         {
             const string messageInput = "Введите количество элементов: ";
             const string messageSuccess = "Успешно введено количество элементов!";
@@ -45,7 +45,7 @@ namespace HTLab4_26_30
         private static void GenerateArray(IList<double> arr)
         {
             const string messageGenerate = "Выбран метод заполнения " +
-                                            "случайными числами";
+                                           "случайными числами";
             Console.WriteLine(messageGenerate);
             var generator = new Random();
             for (var i = 0; i < arr.Count; i++)
@@ -68,7 +68,7 @@ namespace HTLab4_26_30
             return Math.Round(sum / arr.Count, 10);
         }
 
-        private static double[] DeleteElement(IList<double> arr, int indexOfElement)
+        private static double[] DeleteElement(this IList<double> arr, int indexOfElement)
         {
             var tmp = arr[indexOfElement];
             for (var j = indexOfElement; j < arr.Count - 1; j++)
@@ -81,11 +81,11 @@ namespace HTLab4_26_30
             return newArr;
         }
 
-        private static double[] DeleteElemsGreaterThanNum(double[] arr, double num)
+        private static double[] DeleteElemsGreaterThanNum(this double[] arr, double num)
         {
             for (var i = 0; i < arr.Length;)
                 if (arr[i] > num)
-                    arr = DeleteElement(arr, i);
+                    arr = arr.DeleteElement(i);
                 else
                     i++;
 
@@ -95,7 +95,7 @@ namespace HTLab4_26_30
         private static void ChooseMethodToFillArray(double[] arr)
         {
             const string messageChoice = "Вводить элементы с клавиатуры (+) " +
-                                          "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
+                                         "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
             const string messageIncorrectInput = "Вы ввели неизвестный символ, введите заново";
             bool isCorrect;
             do
@@ -123,7 +123,7 @@ namespace HTLab4_26_30
 
         private static double[] ConcatArrays(IReadOnlyList<double> arr, IReadOnlyList<double> arrAdditional)
         {
-            double[] concatArr = new double[arr.Count + arrAdditional.Count];
+            var concatArr = new double[arr.Count + arrAdditional.Count];
             for (var i = 0; i < concatArr.Length; i++)
                 concatArr[i] = i < arr.Count
                     ? arr[i]
@@ -140,7 +140,7 @@ namespace HTLab4_26_30
 
             WriteArray(arr);
             var average = AverageOfArray(arr);
-            arr = DeleteElemsGreaterThanNum(arr, average);
+            arr = arr.DeleteElemsGreaterThanNum(average);
             WriteArray(arr);
 
             ReadSize(out var k);
