@@ -55,13 +55,24 @@ namespace HT_Lab4_26_30
                          + generator.Next(-100, 101);
         }
 
-        private static void WriteArray(IEnumerable<double> arr)
+        private static void WriteArray(double[] arr)
         {
-            foreach (var variable in arr)
-                Console.Write($"{variable} ");
-            Console.WriteLine();
+            if (arr.Length > 0)
+            {
+                foreach (var variable in arr)
+                    Console.Write($"{variable} ");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("<пусто>");
+            }
         }
 
+        /// <summary>
+        ///     Вычисляет среднее арифметическое последовательности
+        ///     <see cref="T:System.Double" /> значений.
+        /// </summary>
         private static double Average(IReadOnlyCollection<double> arr)
         {
             double sum = 0;
@@ -70,6 +81,11 @@ namespace HT_Lab4_26_30
             return Math.Round(sum / arr.Count, 10);
         }
 
+        /// <summary>
+        ///     Удаляет из последовательности
+        ///     <see cref="T:System.Double" />
+        ///     значений элемент с указанным индексом.
+        /// </summary>
         private static double[] DeleteElement(this IList<double> arr, int indexOfElement)
         {
             var tmp = arr[indexOfElement];
