@@ -5,7 +5,7 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
-        private static void ReadSize(out uint n)
+        private static void ReadSize(out uint sizeU)
         {
             const string messageInput = "Введите количество элементов: ";
             const string messageSuccess = "Успешно введено количество элементов!";
@@ -15,7 +15,7 @@ namespace HT_Lab4_26_30
             bool isCorrect;
             do
             {
-                isCorrect = uint.TryParse(Console.ReadLine(), out n);
+                isCorrect = uint.TryParse(Console.ReadLine(), out sizeU);
 
                 Console.WriteLine(isCorrect
                     ? messageSuccess
@@ -23,11 +23,11 @@ namespace HT_Lab4_26_30
             } while (!isCorrect);
         }
 
-        private static void ReadArray(double[] arr)
+        private static void ReadArray(double[] arrayDoubles)
         {
             const string messageInput = "Выбран ручной метод ввода элементов";
             Console.WriteLine(messageInput);
-            for (var i = 0; i < arr.Length; i++)
+            for (var i = 0; i < arrayDoubles.Length; i++)
             {
                 var messageInputElem = $"Введите {i + 1}-й элемент массива: ";
                 var messageFailInputElem = $"Ошибка! {i + 1}-й элемент " +
@@ -37,29 +37,29 @@ namespace HT_Lab4_26_30
                 {
                     Console.Write(messageInputElem);
                     isConvert = double.TryParse(
-                        Console.ReadLine(), out arr[i]);
+                        Console.ReadLine(), out arrayDoubles[i]);
                     if (!isConvert)
                         Console.WriteLine(messageFailInputElem);
                 } while (!isConvert);
             }
         }
 
-        private static void GenerateArray(IList<double> arr)
+        private static void GenerateArray(IList<double> arrayDoubles)
         {
             const string messageGenerate = "Выбран метод заполнения " +
                                            "случайными числами";
             Console.WriteLine(messageGenerate);
             var generator = new Random();
-            for (var i = 0; i < arr.Count; i++)
-                arr[i] = Math.Round(generator.NextDouble(), generator.Next(3))
+            for (var i = 0; i < arrayDoubles.Count; i++)
+                arrayDoubles[i] = Math.Round(generator.NextDouble(), generator.Next(3))
                          + generator.Next(-100, 101);
         }
 
-        private static void WriteArray(double[] arr)
+        private static void WriteArray(IReadOnlyCollection<double> arrayDoubles)
         {
-            if (arr.Length > 0)
+            if (arrayDoubles.Count > 0)
             {
-                foreach (var variable in arr)
+                foreach (var variable in arrayDoubles)
                     Console.Write($"{variable} ");
                 Console.WriteLine();
             }
@@ -73,12 +73,12 @@ namespace HT_Lab4_26_30
         ///     Вычисляет среднее арифметическое последовательности
         ///     <see cref="T:System.Double" /> значений.
         /// </summary>
-        private static double Average(IReadOnlyCollection<double> arr)
+        private static double Average(IReadOnlyCollection<double> arrayDoubles)
         {
             double sum = 0;
-            foreach (var element in arr)
+            foreach (var element in arrayDoubles)
                 sum += element;
-            return Math.Round(sum / arr.Count, 10);
+            return Math.Round(sum / arrayDoubles.Count, 14);
         }
 
         /// <summary>
@@ -86,31 +86,31 @@ namespace HT_Lab4_26_30
         ///     <see cref="T:System.Double" />
         ///     значений элемент с указанным индексом.
         /// </summary>
-        private static double[] DeleteElement(this IList<double> arr, int indexOfElement)
+        private static double[] DeleteElement(this IList<double> arrayDoubles, int indexOfElement)
         {
-            var tmp = arr[indexOfElement];
-            for (var j = indexOfElement; j < arr.Count - 1; j++)
-                arr[j] = arr[j + 1];
-            arr[arr.Count - 1] = tmp;
-            var newArr = new double[arr.Count - 1];
+            var tmp = arrayDoubles[indexOfElement];
+            for (var j = indexOfElement; j < arrayDoubles.Count - 1; j++)
+                arrayDoubles[j] = arrayDoubles[j + 1];
+            arrayDoubles[arrayDoubles.Count - 1] = tmp;
+            var newArr = new double[arrayDoubles.Count - 1];
             for (var i = 0; i < newArr.Length; i++)
-                newArr[i] = arr[i];
+                newArr[i] = arrayDoubles[i];
 
             return newArr;
         }
 
-        private static double[] DeleteElemsGreaterThanNum(this double[] arr, double num)
+        private static double[] DeleteElemsGreaterThanNum(this double[] arrayDoubles, double num)
         {
-            for (var i = 0; i < arr.Length;)
-                if (arr[i] > num)
-                    arr = arr.DeleteElement(i);
+            for (var i = 0; i < arrayDoubles.Length;)
+                if (arrayDoubles[i] > num)
+                    arrayDoubles = arrayDoubles.DeleteElement(i);
                 else
                     i++;
 
-            return arr;
+            return arrayDoubles;
         }
 
-        private static void ChooseMethodToFillArray(double[] arr)
+        private static void ChooseMethodToFillArray(double[] arrayDoubles)
         {
             const string messageChoice = "Вводить элементы с клавиатуры (+) " +
                                          "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
@@ -124,10 +124,10 @@ namespace HT_Lab4_26_30
                 switch (inputSwitcher)
                 {
                     case "+":
-                        ReadArray(arr);
+                        ReadArray(arrayDoubles);
                         break;
                     case "-":
-                        GenerateArray(arr);
+                        GenerateArray(arrayDoubles);
                         break;
                     default:
                         isCorrect = false;
@@ -139,13 +139,13 @@ namespace HT_Lab4_26_30
             } while (!isCorrect);
         }
 
-        private static double[] ConcatArrays(IReadOnlyList<double> arr, IReadOnlyList<double> arrAdditional)
+        private static double[] ConcatArrays(IReadOnlyList<double> arrayDoubles, IReadOnlyList<double> arrayAdditionalDoubles)
         {
-            var concatArr = new double[arr.Count + arrAdditional.Count];
+            var concatArr = new double[arrayDoubles.Count + arrayAdditionalDoubles.Count];
             for (var i = 0; i < concatArr.Length; i++)
-                concatArr[i] = i < arr.Count
-                    ? arr[i]
-                    : arrAdditional[i - arr.Count];
+                concatArr[i] = i < arrayDoubles.Count
+                    ? arrayDoubles[i]
+                    : arrayAdditionalDoubles[i - arrayDoubles.Count];
             return concatArr;
         }
 
