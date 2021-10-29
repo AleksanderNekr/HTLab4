@@ -133,16 +133,22 @@ namespace HT_Lab4_26_30
 
         private static void Main()
         {
+            Console.WriteLine("Ввод массива чисел");
             ReadSize(out var n);
             var arr = new double[n];
 
             ChooseMethodToFillArray(arr);
+            Console.WriteLine("Конец ввода массива чисел");
 
+            Console.Write("Вывод массива: ");
             WriteArray(arr);
             var average = AverageOfArray(arr);
             arr = arr.DeleteElemsGreaterThanNum(average);
+            Console.Write("Массив после удаления из него элементов, больших " +
+                              $"среднего арифметического элементов массива ({average}): ");
             WriteArray(arr);
 
+            Console.WriteLine("Ввод дополнительных элементов к массиву");
             ReadSize(out var k);
             var arrAdditional = new double[k];
             ChooseMethodToFillArray(arrAdditional);
