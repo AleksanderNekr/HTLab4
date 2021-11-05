@@ -5,6 +5,9 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
+        /// <summary>
+        ///     Ввод размера последовательности чисел.
+        /// </summary>
         private static void ReadSize(out uint sizeU)
         {
             const string messageInput = "Введите количество элементов: ";
@@ -23,6 +26,11 @@ namespace HT_Lab4_26_30
             } while (!isCorrect);
         }
 
+        /// <summary>
+        ///     Ввод массива
+        ///     <see cref="T:System.Double" />
+        ///     значений.
+        /// </summary>
         private static void ReadArray(double[] arrayDoubles)
         {
             const string messageInput = "Выбран ручной метод ввода элементов";
@@ -44,6 +52,11 @@ namespace HT_Lab4_26_30
             }
         }
 
+        /// <summary>
+        ///     Генерация последовательности
+        ///     <see cref="T:System.Double" />
+        ///     значений с помощью датчика случайных чисел.
+        /// </summary>
         private static void GenerateArray(IList<double> arrayDoubles)
         {
             const string messageGenerate = "Выбран метод заполнения " +
@@ -52,9 +65,14 @@ namespace HT_Lab4_26_30
             var generator = new Random();
             for (var i = 0; i < arrayDoubles.Count; i++)
                 arrayDoubles[i] = Math.Round(generator.NextDouble(), generator.Next(3))
-                         + generator.Next(-100, 101);
+                                  + generator.Next(-100, 101);
         }
 
+        /// <summary>
+        ///     Вывод последовательности
+        ///     <see cref="T:System.Double" />
+        ///     значений в консоль с пробельным разделителем элементов.
+        /// </summary>
         private static void WriteArray(IReadOnlyCollection<double> arrayDoubles)
         {
             if (arrayDoubles.Count > 0)
@@ -92,13 +110,19 @@ namespace HT_Lab4_26_30
             for (var j = indexOfElement; j < arrayDoubles.Count - 1; j++)
                 arrayDoubles[j] = arrayDoubles[j + 1];
             arrayDoubles[arrayDoubles.Count - 1] = tmp;
-            var newArr = new double[arrayDoubles.Count - 1];
-            for (var i = 0; i < newArr.Length; i++)
-                newArr[i] = arrayDoubles[i];
 
-            return newArr;
+            var finalArr = new double[arrayDoubles.Count - 1];
+            for (var i = 0; i < finalArr.Length; i++)
+                finalArr[i] = arrayDoubles[i];
+
+            return finalArr;
         }
 
+        /// <summary>
+        ///     Удаляет из последовательности
+        ///     <see cref="T:System.Double" />
+        ///     элементы больше указанного.
+        /// </summary>
         private static double[] DeleteElemsGreaterThanNum(this double[] arrayDoubles, double num)
         {
             for (var i = 0; i < arrayDoubles.Length;)
@@ -110,6 +134,10 @@ namespace HT_Lab4_26_30
             return arrayDoubles;
         }
 
+        /// <summary>
+        ///     Предоставляет пользователю выбор ручного ввода элементов или их генерации
+        ///     с помощью датчика случайных чисел.
+        /// </summary>
         private static void ChooseMethodToFillArray(double[] arrayDoubles)
         {
             const string messageChoice = "Вводить элементы с клавиатуры (+) " +
@@ -139,7 +167,13 @@ namespace HT_Lab4_26_30
             } while (!isCorrect);
         }
 
-        private static double[] ConcatArrays(IReadOnlyList<double> arrayDoubles, IReadOnlyList<double> arrayAdditionalDoubles)
+        /// <summary>
+        ///     Соединяет 2 последовательности
+        ///     <see cref="T:System.Double" />
+        ///     значений в одну конечную.
+        /// </summary>
+        private static double[] ConcatArrays(IReadOnlyList<double> arrayDoubles,
+            IReadOnlyList<double> arrayAdditionalDoubles)
         {
             var concatArr = new double[arrayDoubles.Count + arrayAdditionalDoubles.Count];
             for (var i = 0; i < concatArr.Length; i++)
@@ -149,10 +183,14 @@ namespace HT_Lab4_26_30
             return concatArr;
         }
 
+        /// <summary>
+        ///     Главная функция программы.
+        /// </summary>
         private static void Main()
         {
             Console.WriteLine("Ввод массива чисел");
             ReadSize(out var n);
+
             var arr = new double[n];
 
             ChooseMethodToFillArray(arr);
@@ -168,15 +206,21 @@ namespace HT_Lab4_26_30
 
             Console.WriteLine("Ввод дополнительных элементов к массиву");
             ReadSize(out var k);
+
             var arrAdditional = new double[k];
             ChooseMethodToFillArray(arrAdditional);
             Console.WriteLine("Конец ввода дополнительных элементов");
 
             Console.WriteLine("Дополнительные элементы:");
             WriteArray(arrAdditional);
+
             arr = ConcatArrays(arr, arrAdditional);
             Console.WriteLine("Массив после добавления в него дополнительных элементов:");
             WriteArray(arr);
+
+            // TODO: удалять из пустого нельзя, менять что-то тоже, можно дополнять
+            // TODO: Выдать сообщение пользователю, о том что массив пустой и вывести меню,
+            // TODO: пусть дальше пользователь решает, что делать :)
         }
     }
 }
