@@ -11,16 +11,17 @@ namespace HT_Lab4_26_30
         private static void ReadSize(out uint sizeU)
         {
             const string messageInput = "Введите количество элементов: ";
-            const string messageSuccess = "Успешно введено количество элементов!";
+            const string messageSuccess = "Успешно введено количество элементов!\n";
             const string messageFail = "Ошибка! Введено нецелое число, " +
-                                       "или целое, но меньше 0, или строка!";
+                                       "или целое, но меньше 0, или строка!" +
+                                       "\nВведите количество элементов заново: ";
             Console.Write(messageInput);
             bool isCorrect;
             do
             {
                 isCorrect = uint.TryParse(Console.ReadLine(), out sizeU);
 
-                Console.WriteLine(isCorrect
+                Console.Write(isCorrect
                     ? messageSuccess
                     : messageFail);
             } while (!isCorrect);
