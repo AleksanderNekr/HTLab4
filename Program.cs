@@ -28,19 +28,21 @@ namespace HT_Lab4_26_30
         }
 
         /// <summary>
-        ///     Ввод массива
+        ///     Консольный ввод массива
         ///     <see cref="T:System.Double" />
-        ///     значений.
+        ///     значений размером sizeArray.
         /// </summary>
-        private static void ReadArray(double[] arrayDoubles)
+        private static double[] ReadArray(uint sizeArray)
         {
+            var arrayDoubles = new double[sizeArray];
+
             const string messageInput = "Выбран ручной метод ввода элементов";
             Console.WriteLine(messageInput);
-            for (var i = 0; i < arrayDoubles.Length; i++)
+            for (var i = 0; i < sizeArray; i++)
             {
                 var messageInputElem = $"Введите {i + 1}-й элемент массива: ";
                 var messageFailInputElem = $"Ошибка! {i + 1}-й элемент " +
-                                           "введен как не число!";
+                                           "введен не как число!";
                 bool isConvert;
                 do
                 {
@@ -51,22 +53,29 @@ namespace HT_Lab4_26_30
                         Console.WriteLine(messageFailInputElem);
                 } while (!isConvert);
             }
+
+            return arrayDoubles;
         }
 
         /// <summary>
-        ///     Генерация последовательности
+        ///     Генерация массива
         ///     <see cref="T:System.Double" />
-        ///     значений с помощью датчика случайных чисел.
+        ///     значений размером sizeArray
+        ///     с помощью датчика случайных чисел.
         /// </summary>
-        private static void GenerateArray(IList<double> arrayDoubles)
+        private static double[] GenerateArray(uint sizeArray)
         {
+            var arrayDoubles = new double[sizeArray];
+
             const string messageGenerate = "Выбран метод заполнения " +
                                            "случайными числами";
             Console.WriteLine(messageGenerate);
             var generator = new Random();
-            for (var i = 0; i < arrayDoubles.Count; i++)
+            for (var i = 0; i < sizeArray; i++)
                 arrayDoubles[i] = Math.Round(generator.NextDouble(), generator.Next(3))
                                   + generator.Next(-100, 101);
+
+            return arrayDoubles;
         }
 
         /// <summary>
@@ -136,36 +145,28 @@ namespace HT_Lab4_26_30
         }
 
         /// <summary>
-        ///     Предоставляет пользователю выбор ручного ввода элементов или их генерации
+        ///     Предоставляет пользователю выбор ручного ввода countElem элементов или их генерации
         ///     с помощью датчика случайных чисел.
         /// </summary>
-        private static void ChooseMethodToFillArray(double[] arrayDoubles)
+        private static double[] ChooseMethodToFillArray(uint countElem)
         {
             const string messageChoice = "Вводить элементы с клавиатуры (+) " +
                                          "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
             const string messageIncorrectInput = "Вы ввели неизвестный символ, введите заново";
-            bool isCorrect;
             do
             {
-                isCorrect = true;
                 Console.Write(messageChoice);
                 var inputSwitcher = Console.ReadLine();
                 switch (inputSwitcher)
                 {
                     case "+":
-                        ReadArray(arrayDoubles);
-                        break;
+                        return ReadArray(countElem);
                     case "-":
-                        GenerateArray(arrayDoubles);
-                        break;
-                    default:
-                        isCorrect = false;
-                        break;
+                        return GenerateArray(countElem);
                 }
 
-                if (!isCorrect)
-                    Console.WriteLine(messageIncorrectInput);
-            } while (!isCorrect);
+                Console.WriteLine(messageIncorrectInput);
+            } while (true);
         }
 
         /// <summary>
@@ -191,11 +192,7 @@ namespace HT_Lab4_26_30
         {
             Console.WriteLine("Ввод массива чисел");
             ReadSize(out var n);
-
-            var arr = new double[n];
-
-            ChooseMethodToFillArray(arr);
-
+            var arr = ChooseMethodToFillArray(n);
             Console.WriteLine("Массив:");
             WriteArray(arr);
 
@@ -207,17 +204,15 @@ namespace HT_Lab4_26_30
 
             Console.WriteLine("Ввод дополнительных элементов к массиву");
             ReadSize(out var k);
-
-            var arrAdditional = new double[k];
-            ChooseMethodToFillArray(arrAdditional);
+            var arrAdditional = ChooseMethodToFillArray(k);
             Console.WriteLine("Конец ввода дополнительных элементов");
-
             Console.WriteLine("Дополнительные элементы:");
             WriteArray(arrAdditional);
 
             arr = ConcatArrays(arr, arrAdditional);
             Console.WriteLine("Массив после добавления в него дополнительных элементов:");
             WriteArray(arr);
+
 
             // TODO: удалять из пустого нельзя, менять что-то тоже, можно дополнять
             // TODO: Выдать сообщение пользователю, о том что массив пустой и вывести меню,
