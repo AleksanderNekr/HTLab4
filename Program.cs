@@ -106,11 +106,11 @@ namespace HT_Lab4_26_30
             double sum = 0;
             foreach (var element in arrayDoubles)
                 sum += element;
-            return Math.Round(sum / arrayDoubles.Count, 14);
+            return sum / arrayDoubles.Count;
         }
 
         /// <summary>
-        ///     Удаляет из последовательности
+        ///     Удаляет из массива
         ///     <see cref="T:System.Double" />
         ///     значений элемент с индексом indexOfElement.
         /// </summary>
@@ -129,7 +129,7 @@ namespace HT_Lab4_26_30
         }
 
         /// <summary>
-        ///     Удаляет из последовательности
+        ///     Удаляет из массива
         ///     <see cref="T:System.Double" /> значений
         ///     элементы больше указанного.
         /// </summary>
@@ -183,9 +183,6 @@ namespace HT_Lab4_26_30
             return arrResult;
         }
 
-        /// <summary>
-        ///     Главная функция программы.
-        /// </summary>
         private static void Main()
         {
             Console.WriteLine("Ввод массива чисел");
