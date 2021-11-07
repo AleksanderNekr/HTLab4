@@ -112,7 +112,7 @@ namespace HT_Lab4_26_30
         /// <summary>
         ///     Удаляет из последовательности
         ///     <see cref="T:System.Double" />
-        ///     значений элемент с указанным индексом.
+        ///     значений элемент с индексом indexOfElement.
         /// </summary>
         private static double[] DeleteElement(this IList<double> arrayDoubles, int indexOfElement)
         {
@@ -130,18 +130,16 @@ namespace HT_Lab4_26_30
 
         /// <summary>
         ///     Удаляет из последовательности
-        ///     <see cref="T:System.Double" />
+        ///     <see cref="T:System.Double" /> значений
         ///     элементы больше указанного.
         /// </summary>
-        private static double[] DeleteElemsGreaterThanNum(this double[] arrayDoubles, double num)
+        private static void DeleteElemsGreaterThanNum(ref double[] arrayDoubles, double num)
         {
             for (var i = 0; i < arrayDoubles.Length;)
                 if (arrayDoubles[i] > num)
                     arrayDoubles = arrayDoubles.DeleteElement(i);
                 else
                     i++;
-
-            return arrayDoubles;
         }
 
         /// <summary>
@@ -174,15 +172,15 @@ namespace HT_Lab4_26_30
         ///     <see cref="T:System.Double" />
         ///     значений в одну конечную.
         /// </summary>
-        private static double[] ConcatArrays(IReadOnlyList<double> arrayDoubles,
-            IReadOnlyList<double> arrayAdditionalDoubles)
+        private static double[] ConcatArrays(IReadOnlyList<double> arrayDoubles1,
+            IReadOnlyList<double> arrayDoubles2)
         {
-            var concatArr = new double[arrayDoubles.Count + arrayAdditionalDoubles.Count];
-            for (var i = 0; i < concatArr.Length; i++)
-                concatArr[i] = i < arrayDoubles.Count
-                    ? arrayDoubles[i]
-                    : arrayAdditionalDoubles[i - arrayDoubles.Count];
-            return concatArr;
+            var arrResult = new double[arrayDoubles1.Count + arrayDoubles2.Count];
+            for (var i = 0; i < arrResult.Length; i++)
+                arrResult[i] = i < arrayDoubles1.Count
+                    ? arrayDoubles1[i]
+                    : arrayDoubles2[i - arrayDoubles1.Count];
+            return arrResult;
         }
 
         /// <summary>
@@ -197,7 +195,7 @@ namespace HT_Lab4_26_30
             WriteArray(arr);
 
             var average = Average(arr);
-            arr = arr.DeleteElemsGreaterThanNum(average);
+            DeleteElemsGreaterThanNum(ref arr, average);
             Console.WriteLine("Массив после удаления из него элементов, больших " +
                               $"среднего арифметического элементов массива ({average}):");
             WriteArray(arr);
@@ -212,7 +210,6 @@ namespace HT_Lab4_26_30
             arr = ConcatArrays(arr, arrAdditional);
             Console.WriteLine("Массив после добавления в него дополнительных элементов:");
             WriteArray(arr);
-
 
             // TODO: удалять из пустого нельзя, менять что-то тоже, можно дополнять
             // TODO: Выдать сообщение пользователю, о том что массив пустой и вывести меню,
