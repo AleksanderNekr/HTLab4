@@ -5,25 +5,54 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
+        private static void Main()
+        {
+            Console.WriteLine(MessageMainInputSize);
+            ReadSize(out var n);
+            var arr = ChooseMethodToFillArray(n);
+            Console.WriteLine(MessageMainOutputArray);
+            WriteArray(arr);
+
+            if (arr.Length > 0)
+            {
+                var average = Average(arr);
+                DeleteElemsGreaterThanNum(ref arr, average);
+                Console.WriteLine(MessageMainOutputArrayAfterDel + average);
+                WriteArray(arr);
+            }
+
+            Console.WriteLine(MessageMainInputAddArray);
+            ReadSize(out var k);
+            var arrAdditional = ChooseMethodToFillArray(k);
+            Console.WriteLine(MessageMainEndOfInputAddArray);
+            Console.WriteLine(MessageMainOutputAddArray);
+            WriteArray(arrAdditional);
+
+            arr = ConcatArrays(arr, arrAdditional);
+            Console.WriteLine(MessageMainArrayWithAdd);
+            WriteArray(arr);
+
+            // TODO: удалять из пустого нельзя, менять что-то тоже, можно дополнять
+            // TODO: Выдать сообщение пользователю, о том что массив пустой и вывести меню,
+            // TODO: пусть дальше пользователь решает, что делать :)
+        }
+
+        #region Функции
+
         /// <summary>
         ///     Ввод размера последовательности чисел.
         /// </summary>
         private static void ReadSize(out uint sizeU)
         {
-            const string messageInput = "Введите количество элементов: ";
-            const string messageSuccess = "Успешно введено количество элементов!\n";
-            const string messageFail = "Ошибка! Введено нецелое число, " +
-                                       "или целое, но меньше 0, или строка!" +
-                                       "\nВведите количество элементов заново: ";
-            Console.Write(messageInput);
+            Console.Write(MessageInputCount);
             bool isCorrect;
             do
             {
                 isCorrect = uint.TryParse(Console.ReadLine(), out sizeU);
 
                 Console.Write(isCorrect
-                    ? messageSuccess
-                    : messageFail);
+                    ? MessageSuccessInputCount
+                    : MessageFailInputCount);
             } while (!isCorrect);
         }
 
@@ -36,22 +65,17 @@ namespace HT_Lab4_26_30
         {
             var arrayInts = new int[sizeArray];
 
-            const string messageInput = "Выбран ручной метод ввода " +
-                                        "целочисленных элементов";
-            Console.WriteLine(messageInput);
+            Console.WriteLine(MessageInputConsole);
             for (var i = 0; i < sizeArray; i++)
             {
-                var messageInputElem = $"Введите {i + 1}-й элемент массива: ";
-                var messageFailInputElem = $"Ошибка! {i + 1}-й элемент " +
-                                           "введен не как целое число!";
                 bool isConvert;
                 do
                 {
-                    Console.Write(messageInputElem);
+                    Console.Write(MessageInputElem + i + ": ");
                     isConvert = int.TryParse(
                         Console.ReadLine(), out arrayInts[i]);
                     if (!isConvert)
-                        Console.WriteLine(messageFailInputElem);
+                        Console.WriteLine(MessageFailInputElem + i);
                 } while (!isConvert);
             }
 
@@ -68,9 +92,7 @@ namespace HT_Lab4_26_30
         {
             var arrayInts = new int[sizeArray];
 
-            const string messageGenerate = "Выбран метод заполнения " +
-                                           "случайными числами";
-            Console.WriteLine(messageGenerate);
+            Console.WriteLine(MessageGenerate);
             var generator = new Random();
             for (var i = 0; i < sizeArray; i++)
                 arrayInts[i] = generator.Next(-100, 101);
@@ -93,7 +115,7 @@ namespace HT_Lab4_26_30
             }
             else
             {
-                Console.WriteLine("<пусто>");
+                Console.WriteLine(MessageWriteEmptyArray);
             }
         }
 
@@ -150,13 +172,9 @@ namespace HT_Lab4_26_30
         {
             if (countElem == 0)
                 return new int[] { };
-
-            const string messageChoice = "Вводить элементы с клавиатуры (+) " +
-                                         "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
-            const string messageIncorrectInput = "Вы ввели неизвестный символ, введите заново";
             do
             {
-                Console.Write(messageChoice);
+                Console.Write(MessageChoice);
                 var inputSwitcher = Console.ReadLine();
                 switch (inputSwitcher)
                 {
@@ -166,7 +184,7 @@ namespace HT_Lab4_26_30
                         return GenerateArray(countElem);
                 }
 
-                Console.WriteLine(messageIncorrectInput);
+                Console.WriteLine(MessageChoiceIncorrectInput);
             } while (true);
         }
 
@@ -186,37 +204,50 @@ namespace HT_Lab4_26_30
             return arrResult;
         }
 
-        private static void Main()
-        {
-            Console.WriteLine("Ввод массива чисел");
-            ReadSize(out var n);
-            var arr = ChooseMethodToFillArray(n);
-            Console.WriteLine("Массив:");
-            WriteArray(arr);
+        #endregion
 
-            if (arr.Length > 0)
-            {
-                var average = Average(arr);
-                DeleteElemsGreaterThanNum(ref arr, average);
-                Console.WriteLine("Массив после удаления из него элементов, больших " +
-                                  $"среднего арифметического элементов массива ({average}):");
-                WriteArray(arr);
-            }
+        #region Литеральные константы
 
-            Console.WriteLine("Ввод дополнительных элементов к массиву");
-            ReadSize(out var k);
-            var arrAdditional = ChooseMethodToFillArray(k);
-            Console.WriteLine("Конец ввода дополнительных элементов");
-            Console.WriteLine("Дополнительные элементы:");
-            WriteArray(arrAdditional);
+        private const string MessageGenerate = "Выбран метод заполнения " +
+                                               "случайными числами";
 
-            arr = ConcatArrays(arr, arrAdditional);
-            Console.WriteLine("Массив после добавления в него дополнительных элементов:");
-            WriteArray(arr);
+        private const string MessageInputConsole = "Выбран ручной метод ввода " +
+                                                   "целочисленных элементов";
 
-            // TODO: удалять из пустого нельзя, менять что-то тоже, можно дополнять
-            // TODO: Выдать сообщение пользователю, о том что массив пустой и вывести меню,
-            // TODO: пусть дальше пользователь решает, что делать :)
-        }
+        private const string MessageInputCount = "Введите количество элементов: ";
+        private const string MessageSuccessInputCount = "Успешно введено количество элементов!\n";
+
+        private const string MessageFailInputCount = "Ошибка! Введено нецелое число, " +
+                                                     "или целое, но меньше 0, или строка!" +
+                                                     "\nВведите количество элементов заново: ";
+
+        private const string MessageInputElem = "Введите элемент массива №";
+
+        private const string MessageFailInputElem = "Ошибка! Введен не как целое число "
+                                                    + "элемент №";
+
+        private const string MessageWriteEmptyArray = "(пусто)";
+
+        private const string MessageChoice = "Вводить элементы с клавиатуры (+) " +
+                                             "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
+
+        private const string MessageChoiceIncorrectInput = "Вы ввели неизвестный символ, введите заново";
+
+        private const string MessageMainInputSize = "Ввод массива чисел";
+
+        private const string MessageMainArrayWithAdd = "Массив после добавления в него дополнительных элементов:";
+
+        private const string MessageMainOutputAddArray = "Дополнительные элементы:";
+
+        private const string MessageMainEndOfInputAddArray = "Конец ввода дополнительных элементов";
+
+        private const string MessageMainInputAddArray = "Ввод дополнительных элементов к массиву";
+
+        private const string MessageMainOutputArrayAfterDel = "Массив после удаления из него элементов, больших " +
+                                                              "среднего арифметического элементов массива = ";
+
+        private const string MessageMainOutputArray = "Массив:";
+
+        #endregion
     }
 }
