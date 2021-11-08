@@ -29,65 +29,65 @@ namespace HT_Lab4_26_30
 
         /// <summary>
         ///     Консольный ввод массива
-        ///     <see cref="T:System.Double" />
+        ///     <see cref="T:System.Int32" />
         ///     значений размером sizeArray.
         /// </summary>
-        private static double[] ReadArray(uint sizeArray)
+        private static int[] ReadArray(uint sizeArray)
         {
-            var arrayDoubles = new double[sizeArray];
+            var arrayInts = new int[sizeArray];
 
-            const string messageInput = "Выбран ручной метод ввода элементов";
+            const string messageInput = "Выбран ручной метод ввода " +
+                                        "целочисленных элементов";
             Console.WriteLine(messageInput);
             for (var i = 0; i < sizeArray; i++)
             {
                 var messageInputElem = $"Введите {i + 1}-й элемент массива: ";
                 var messageFailInputElem = $"Ошибка! {i + 1}-й элемент " +
-                                           "введен не как число!";
+                                           "введен не как целое число!";
                 bool isConvert;
                 do
                 {
                     Console.Write(messageInputElem);
-                    isConvert = double.TryParse(
-                        Console.ReadLine(), out arrayDoubles[i]);
+                    isConvert = int.TryParse(
+                        Console.ReadLine(), out arrayInts[i]);
                     if (!isConvert)
                         Console.WriteLine(messageFailInputElem);
                 } while (!isConvert);
             }
 
-            return arrayDoubles;
+            return arrayInts;
         }
 
         /// <summary>
         ///     Генерация массива
-        ///     <see cref="T:System.Double" />
+        ///     <see cref="T:System.Int32" />
         ///     значений размером sizeArray
         ///     с помощью датчика случайных чисел.
         /// </summary>
-        private static double[] GenerateArray(uint sizeArray)
+        private static int[] GenerateArray(uint sizeArray)
         {
-            var arrayDoubles = new double[sizeArray];
+            var arrayInts = new int[sizeArray];
 
             const string messageGenerate = "Выбран метод заполнения " +
                                            "случайными числами";
             Console.WriteLine(messageGenerate);
             var generator = new Random();
             for (var i = 0; i < sizeArray; i++)
-                arrayDoubles[i] = Math.Round(generator.NextDouble(), generator.Next(3))
-                                  + generator.Next(-100, 101);
+                arrayInts[i] = generator.Next(-100, 101);
 
-            return arrayDoubles;
+            return arrayInts;
         }
 
         /// <summary>
         ///     Вывод последовательности
-        ///     <see cref="T:System.Double" />
+        ///     <see cref="T:System.Int32" />
         ///     значений в консоль с пробельным разделителем элементов.
         /// </summary>
-        private static void WriteArray(IReadOnlyCollection<double> arrayDoubles)
+        private static void WriteArray(IReadOnlyCollection<int> arrayInts)
         {
-            if (arrayDoubles.Count > 0)
+            if (arrayInts.Count > 0)
             {
-                foreach (var variable in arrayDoubles)
+                foreach (var variable in arrayInts)
                     Console.Write($"{variable} ");
                 Console.WriteLine();
             }
@@ -99,45 +99,45 @@ namespace HT_Lab4_26_30
 
         /// <summary>
         ///     Вычисляет среднее арифметическое последовательности
-        ///     <see cref="T:System.Double" /> значений.
+        ///     <see cref="T:System.Int32" /> значений.
         /// </summary>
-        private static double Average(IReadOnlyCollection<double> arrayDoubles)
+        private static double Average(IReadOnlyCollection<int> arrayInts)
         {
-            double sum = 0;
-            foreach (var element in arrayDoubles)
+            var sum = 0.0;
+            foreach (var element in arrayInts)
                 sum += element;
-            return sum / arrayDoubles.Count;
+            return sum / arrayInts.Count;
         }
 
         /// <summary>
         ///     Удаляет из массива
-        ///     <see cref="T:System.Double" />
+        ///     <see cref="T:System.Int32" />
         ///     значений элемент с индексом indexOfElement.
         /// </summary>
-        private static double[] DeleteElement(this IList<double> arrayDoubles, int indexOfElement)
+        private static int[] DeleteElement(this IList<int> arrayInts, int indexOfElement)
         {
-            var tmp = arrayDoubles[indexOfElement];
-            for (var j = indexOfElement; j < arrayDoubles.Count - 1; j++)
-                arrayDoubles[j] = arrayDoubles[j + 1];
-            arrayDoubles[arrayDoubles.Count - 1] = tmp;
+            var tmp = arrayInts[indexOfElement];
+            for (var j = indexOfElement; j < arrayInts.Count - 1; j++)
+                arrayInts[j] = arrayInts[j + 1];
+            arrayInts[arrayInts.Count - 1] = tmp;
 
-            var finalArr = new double[arrayDoubles.Count - 1];
+            var finalArr = new int[arrayInts.Count - 1];
             for (var i = 0; i < finalArr.Length; i++)
-                finalArr[i] = arrayDoubles[i];
+                finalArr[i] = arrayInts[i];
 
             return finalArr;
         }
 
         /// <summary>
         ///     Удаляет из массива
-        ///     <see cref="T:System.Double" /> значений
+        ///     <see cref="T:System.Int32" /> значений
         ///     элементы больше указанного.
         /// </summary>
-        private static void DeleteElemsGreaterThanNum(ref double[] arrayDoubles, double num)
+        private static void DeleteElemsGreaterThanNum(ref int[] arrayInts, double num)
         {
-            for (var i = 0; i < arrayDoubles.Length;)
-                if (arrayDoubles[i] > num)
-                    arrayDoubles = arrayDoubles.DeleteElement(i);
+            for (var i = 0; i < arrayInts.Length;)
+                if (arrayInts[i] > num)
+                    arrayInts = arrayInts.DeleteElement(i);
                 else
                     i++;
         }
@@ -146,8 +146,11 @@ namespace HT_Lab4_26_30
         ///     Предоставляет пользователю выбор ручного ввода countElem элементов или их генерации
         ///     с помощью датчика случайных чисел.
         /// </summary>
-        private static double[] ChooseMethodToFillArray(uint countElem)
+        private static int[] ChooseMethodToFillArray(uint countElem)
         {
+            if (countElem == 0)
+                return new int[] { };
+
             const string messageChoice = "Вводить элементы с клавиатуры (+) " +
                                          "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
             const string messageIncorrectInput = "Вы ввели неизвестный символ, введите заново";
@@ -169,17 +172,17 @@ namespace HT_Lab4_26_30
 
         /// <summary>
         ///     Соединяет 2 последовательности
-        ///     <see cref="T:System.Double" />
+        ///     <see cref="T:System.Int32" />
         ///     значений в одну конечную.
         /// </summary>
-        private static double[] ConcatArrays(IReadOnlyList<double> arrayDoubles1,
-            IReadOnlyList<double> arrayDoubles2)
+        private static int[] ConcatArrays(IReadOnlyList<int> arrayInts1,
+            IReadOnlyList<int> arrayInts2)
         {
-            var arrResult = new double[arrayDoubles1.Count + arrayDoubles2.Count];
+            var arrResult = new int[arrayInts1.Count + arrayInts2.Count];
             for (var i = 0; i < arrResult.Length; i++)
-                arrResult[i] = i < arrayDoubles1.Count
-                    ? arrayDoubles1[i]
-                    : arrayDoubles2[i - arrayDoubles1.Count];
+                arrResult[i] = i < arrayInts1.Count
+                    ? arrayInts1[i]
+                    : arrayInts2[i - arrayInts1.Count];
             return arrResult;
         }
 
@@ -191,11 +194,14 @@ namespace HT_Lab4_26_30
             Console.WriteLine("Массив:");
             WriteArray(arr);
 
-            var average = Average(arr);
-            DeleteElemsGreaterThanNum(ref arr, average);
-            Console.WriteLine("Массив после удаления из него элементов, больших " +
-                              $"среднего арифметического элементов массива ({average}):");
-            WriteArray(arr);
+            if (arr.Length > 0)
+            {
+                var average = Average(arr);
+                DeleteElemsGreaterThanNum(ref arr, average);
+                Console.WriteLine("Массив после удаления из него элементов, больших " +
+                                  $"среднего арифметического элементов массива ({average}):");
+                WriteArray(arr);
+            }
 
             Console.WriteLine("Ввод дополнительных элементов к массиву");
             ReadSize(out var k);
