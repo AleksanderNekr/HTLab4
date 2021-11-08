@@ -5,6 +5,19 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
+        private const string MessageMainArrayAfterSwap = "Массив после перестановки элементов с" +
+                                                         " четными и нечетными номерами:";
+
+        private const string MessageMainDidntFind = "Элемент не найден";
+
+        private const string MessageMainPosFindElem = "Позиция найденного элемента: ";
+
+        private const string MessageMainCountOfCompars = "Количество сравнений: ";
+
+        private const string MessageMainResultOfSearch = "Результат поиска первого отрицательного элемента: ";
+
+        private const string MessageMainSearchFirstNeg = "Поиск первого отрицательного элемента";
+
         private static void Main()
         {
             Console.WriteLine(MessageMainInputSize);
@@ -12,6 +25,8 @@ namespace HT_Lab4_26_30
             var arr = ChooseMethodToFillArray(n);
             Console.WriteLine(MessageMainOutputArray);
             WriteArray(arr);
+
+            Menu();
 
             if (arr.Length > 0)
             {
@@ -21,23 +36,116 @@ namespace HT_Lab4_26_30
                 WriteArray(arr);
             }
 
+            Menu();
+
             Console.WriteLine(MessageMainInputAddArray);
             ReadSize(out var k);
             var arrAdditional = ChooseMethodToFillArray(k);
             Console.WriteLine(MessageMainEndOfInputAddArray);
             Console.WriteLine(MessageMainOutputAddArray);
             WriteArray(arrAdditional);
-
             arr = ConcatArrays(arr, arrAdditional);
             Console.WriteLine(MessageMainArrayWithAdd);
             WriteArray(arr);
 
+            Menu();
+
+            SwapEvenWithOddIndex(ref arr);
+            Console.WriteLine(MessageMainArrayAfterSwap);
+            WriteArray(arr);
+
+            Menu();
+
+            var findElem = SearchFirstNegat(arr, out var count);
+            Console.WriteLine(MessageMainSearchFirstNeg);
+            if (findElem > 0)
+            {
+                Console.WriteLine(MessageMainDidntFind);
+            }
+            else
+            {
+                Console.WriteLine(MessageMainResultOfSearch + findElem);
+                Console.WriteLine(MessageMainPosFindElem + count);
+                Console.WriteLine(MessageMainCountOfCompars + count);
+            }
+
+            Menu();
+
+            SortBySimpleInsert(ref arr);
+            Console.WriteLine(MessageMainSortedArray);
+            WriteArray(arr);
+
+            Menu();
+
             // TODO: удалять из пустого нельзя, менять что-то тоже, можно дополнять
             // TODO: Выдать сообщение пользователю, о том что массив пустой и вывести меню,
             // TODO: пусть дальше пользователь решает, что делать :)
+            // TODO: 7.	Выполнить сортировку массива методом «Простого включения».
+            // TODO: 8.	Выполнить поиск найденного ранее элемента в отсортированном массиве и подсчитать количество сравнений, необходимых для поиска этого элемента.
+        }
+
+        private const string MessageMainSortedArray = "Массив после сортировки методом \"Простого включения\":";
+
+        private static void SortBySimpleInsert(ref int[] arrayInts)
+        {
+            for (var i = 1; i < arrayInts.Length; i++)
+            {
+                var tmp = arrayInts[i];
+                var j = i - 1;
+                for (; j >= 0 && arrayInts[j] > tmp; j--)
+                    arrayInts[j + 1] = arrayInts[j];
+                arrayInts[j + 1] = tmp;
+            }
+        }
+
+        private static int SearchFirstNegat(IEnumerable<int> arrayInts, out uint count)
+        {
+            count = 0;
+            foreach (var element in arrayInts)
+            {
+                count++;
+                if (element < 0)
+                    return element;
+            }
+
+            return 1;
         }
 
         #region Функции
+
+        /// <summary>
+        ///     Перестановка элементов с четными и нечетными индексами
+        ///     в массиве <see cref="T:System.Int32" /> значений .
+        /// </summary>
+        private static void SwapEvenWithOddIndex(ref int[] arrayInts)
+        {
+            for (var i = 1; i < arrayInts.Length; i += 2)
+                (arrayInts[i], arrayInts[i - 1]) = (arrayInts[i - 1], arrayInts[i]);
+        }
+
+        /// <summary>
+        ///     Вывод меню с выбором продолжения выполнения программы или ее завершения.
+        /// </summary>
+        private static void Menu()
+        {
+            do
+            {
+                Console.Write(MessageMenu);
+                var choiceSign = Console.ReadLine();
+                switch (choiceSign)
+                {
+                    case "+":
+                        Console.WriteLine(MessageMenuCont);
+                        return;
+                    case "-":
+                        Console.WriteLine(MessageMenuExit);
+                        Environment.Exit(123);
+                        return;
+                }
+
+                Console.WriteLine(MessageChoiceIncorrectInput);
+            } while (true);
+        }
 
         /// <summary>
         ///     Ввод размера последовательности чисел.
@@ -71,7 +179,7 @@ namespace HT_Lab4_26_30
                 bool isConvert;
                 do
                 {
-                    Console.Write(MessageInputElem + i + ": ");
+                    Console.Write(MessageInputElem + (i + 1) + ": ");
                     isConvert = int.TryParse(
                         Console.ReadLine(), out arrayInts[i]);
                     if (!isConvert)
@@ -208,6 +316,13 @@ namespace HT_Lab4_26_30
 
         #region Литеральные константы
 
+        private const string MessageMenuExit = "Программа завершается...";
+
+        private const string MessageMenuCont = "Программа продолжается...\n";
+
+        private const string MessageMenu = "Продолжить выполнение программы (+) " +
+                                           "или завершить (-)? Ваш выбор [+/-]: ";
+
         private const string MessageGenerate = "Выбран метод заполнения " +
                                                "случайными числами";
 
@@ -221,7 +336,7 @@ namespace HT_Lab4_26_30
                                                      "или целое, но меньше 0, или строка!" +
                                                      "\nВведите количество элементов заново: ";
 
-        private const string MessageInputElem = "Введите элемент массива №";
+        private const string MessageInputElem = "Введите элемент массива № ";
 
         private const string MessageFailInputElem = "Ошибка! Введен не как целое число "
                                                     + "элемент №";
