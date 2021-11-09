@@ -6,9 +6,9 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
-
         private static void Main()
         {
+            ShowMainMenu();
             Console.WriteLine(MessageMainInputSize);
             ReadSize(out var n);
             var arr = ChooseMethodToFillArray(n);
@@ -81,18 +81,50 @@ namespace HT_Lab4_26_30
             Console.WriteLine(MessageMenuExit);
         }
 
-        #region Глобальные переменные
+        private static void ShowMainMenu()
+        {
+            Console.WriteLine("Здравствуйте! Выберите, что нужно сделать (введите номер):" +
+                              "\n1) Сформировать массив вручную" +
+                              "\n2) Сформировать массив с помощью датчика случайных чисел");
+            Console.Write("Ваш выбор: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
 
-        private static int _count;
-
-        #endregion
+            }
+            Console.WriteLine("Выберите, что сделать (введите номер):" +
+                              "\n1) Сформировать массив вручную" +
+                              "\n2) Сформировать массив с помощью датчика случайных чисел" +
+                              "\n3) Вывести массив на экран" +
+                              "\n4) Удалить элементы больше среднего арифметического элементов массива" +
+                              "\n5) Добавить K элементов в конец массива" +
+                              "\n6) Поменять местами элементы с четными и нечетными номерами" +
+                              "\n7) Найти первый отрицательный элемент, подсчитать количество сравнений" +
+                              "\n8) Отсортировать массив методом «Простое включение»" +
+                              "\n9) Поиск методом «Бинарный поиск» найденного в 7 пункте отрицательного элемента," +
+                              " перед этим отсортировав массив, подсчет количества сравнений, " +
+                              "но после поиска вернуть массив в исходное состояние");
+        }
 
         #region Функции
+
+        #region Работа с последовательностями
+
+        /// <summary>
+        ///     Вычисляет среднее арифметическое последовательности
+        ///     <see cref="T:System.Int32" /> значений.
+        /// </summary>
+        private static double Average(IReadOnlyCollection<int> arrayInts)
+        {
+            var sum = arrayInts.Aggregate(0.0,
+                (current, element) => current + element);
+            return sum / arrayInts.Count;
+        }
 
         /// <summary>
         ///     Поиск указанного элемента в последовательности
         ///     <see cref="T:System.Int32" /> значений
-        ///     методом «Бинарный поиск».
+        ///     методом «Бинарный поиск», и подсчет количества сравнений.
         /// </summary>
         private static int BinarySearch(IReadOnlyList<int> arrayInts, int findElem)
         {
@@ -118,8 +150,101 @@ namespace HT_Lab4_26_30
         }
 
         /// <summary>
+        ///     Соединяет 2 последовательности
+        ///     <see cref="T:System.Int32" />
+        ///     значений в одну конечную.
+        /// </summary>
+        private static int[] ConcatArrays(IReadOnlyList<int> arrayInts1,
+            IReadOnlyList<int> arrayInts2)
+        {
+            var arrResult = new int[arrayInts1.Count + arrayInts2.Count];
+            for (var i = 0; i < arrResult.Length; i++)
+                arrResult[i] = i < arrayInts1.Count
+                    ? arrayInts1[i]
+                    : arrayInts2[i - arrayInts1.Count];
+            return arrResult;
+        }
+
+        /// <summary>
+        ///     Удаляет из массива
+        ///     <see cref="T:System.Int32" />
+        ///     значений элемент с индексом indexOfElement.
+        /// </summary>
+        private static int[] DeleteElement(this IList<int> arrayInts, int indexOfElement)
+        {
+            var tmp = arrayInts[indexOfElement];
+            for (var j = indexOfElement; j < arrayInts.Count - 1; j++)
+                arrayInts[j] = arrayInts[j + 1];
+            arrayInts[arrayInts.Count - 1] = tmp;
+
+            var finalArr = new int[arrayInts.Count - 1];
+            for (var i = 0; i < finalArr.Length; i++)
+                finalArr[i] = arrayInts[i];
+
+            return finalArr;
+        }
+
+        /// <summary>
+        ///     Удаляет из массива
+        ///     <see cref="T:System.Int32" /> значений
+        ///     элементы больше указанного.
+        /// </summary>
+        private static void DeleteElemsGreaterThanNum(ref int[] arrayInts, double num)
+        {
+            for (var i = 0; i < arrayInts.Length;)
+                if (arrayInts[i] > num)
+                    arrayInts = arrayInts.DeleteElement(i);
+                else
+                    i++;
+        }
+
+        /// <summary>
+        ///     Генерация массива
+        ///     <see cref="T:System.Int32" />
+        ///     значений размером sizeArray
+        ///     с помощью датчика случайных чисел.
+        /// </summary>
+        private static int[] GenerateArray(uint sizeArray)
+        {
+            var arrayInts = new int[sizeArray];
+
+            Console.WriteLine(MessageGenerate);
+            var generator = new Random();
+            for (var i = 0; i < sizeArray; i++)
+                arrayInts[i] = generator.Next(-100, 101);
+
+            return arrayInts;
+        }
+
+        /// <summary>
+        ///     Консольный ввод массива
+        ///     <see cref="T:System.Int32" />
+        ///     значений размером sizeArray.
+        /// </summary>
+        private static int[] ReadArray(uint sizeArray)
+        {
+            var arrayInts = new int[sizeArray];
+
+            Console.WriteLine(MessageInputConsole);
+            for (var i = 0; i < sizeArray; i++)
+            {
+                bool isConvert;
+                do
+                {
+                    Console.Write(MessageInputElem + (i + 1) + ": ");
+                    isConvert = int.TryParse(
+                        Console.ReadLine(), out arrayInts[i]);
+                    if (!isConvert)
+                        Console.WriteLine(MessageFailInputElem + (i + 1));
+                } while (!isConvert);
+            }
+
+            return arrayInts;
+        }
+
+        /// <summary>
         ///     Сортировка массива <see cref="T:System.Int32" /> значений
-        ///     методом «Простого включения».
+        ///     методом «Простое включение».
         /// </summary>
         private static void SortBySimpleInsert(ref int[] arrayInts)
         {
@@ -158,92 +283,11 @@ namespace HT_Lab4_26_30
         private static void SwapEvenWithOddIndex(ref int[] arrayInts)
         {
             for (var i = 1; i < arrayInts.Length; i += 2)
-                (arrayInts[i], arrayInts[i - 1]) = (arrayInts[i - 1], arrayInts[i]);
-        }
-
-        /// <summary>
-        ///     Вывод меню с выбором продолжения выполнения программы или ее завершения.
-        /// </summary>
-        private static void Menu()
-        {
-            do
             {
-                Console.Write(MessageMenu);
-                var choiceSign = Console.ReadLine();
-                switch (choiceSign)
-                {
-                    case "+":
-                        Console.WriteLine(MessageMenuCont);
-                        return;
-                    case "-":
-                        Console.WriteLine(MessageMenuExit);
-                        Environment.Exit(123);
-                        return;
-                }
-
-                Console.WriteLine(MessageChoiceIncorrectInput);
-            } while (true);
-        }
-
-        /// <summary>
-        ///     Ввод размера последовательности чисел.
-        /// </summary>
-        private static void ReadSize(out uint sizeU)
-        {
-            Console.Write(MessageInputCount);
-            bool isCorrect;
-            do
-            {
-                isCorrect = uint.TryParse(Console.ReadLine(), out sizeU);
-
-                Console.Write(isCorrect
-                    ? MessageSuccessInputCount
-                    : MessageFailInputCount);
-            } while (!isCorrect);
-        }
-
-        /// <summary>
-        ///     Консольный ввод массива
-        ///     <see cref="T:System.Int32" />
-        ///     значений размером sizeArray.
-        /// </summary>
-        private static int[] ReadArray(uint sizeArray)
-        {
-            var arrayInts = new int[sizeArray];
-
-            Console.WriteLine(MessageInputConsole);
-            for (var i = 0; i < sizeArray; i++)
-            {
-                bool isConvert;
-                do
-                {
-                    Console.Write(MessageInputElem + (i + 1) + ": ");
-                    isConvert = int.TryParse(
-                        Console.ReadLine(), out arrayInts[i]);
-                    if (!isConvert)
-                        Console.WriteLine(MessageFailInputElem + (i + 1));
-                } while (!isConvert);
+                var tmp = arrayInts[i];
+                arrayInts[i] = arrayInts[i - 1];
+                arrayInts[i - 1] = tmp;
             }
-
-            return arrayInts;
-        }
-
-        /// <summary>
-        ///     Генерация массива
-        ///     <see cref="T:System.Int32" />
-        ///     значений размером sizeArray
-        ///     с помощью датчика случайных чисел.
-        /// </summary>
-        private static int[] GenerateArray(uint sizeArray)
-        {
-            var arrayInts = new int[sizeArray];
-
-            Console.WriteLine(MessageGenerate);
-            var generator = new Random();
-            for (var i = 0; i < sizeArray; i++)
-                arrayInts[i] = generator.Next(-100, 101);
-
-            return arrayInts;
         }
 
         /// <summary>
@@ -265,49 +309,9 @@ namespace HT_Lab4_26_30
             }
         }
 
-        /// <summary>
-        ///     Вычисляет среднее арифметическое последовательности
-        ///     <see cref="T:System.Int32" /> значений.
-        /// </summary>
-        private static double Average(IReadOnlyCollection<int> arrayInts)
-        {
-            var sum = arrayInts.Aggregate(0.0,
-                (current, element) => current + element);
-            return sum / arrayInts.Count;
-        }
+        #endregion
 
-        /// <summary>
-        ///     Удаляет из массива
-        ///     <see cref="T:System.Int32" />
-        ///     значений элемент с индексом indexOfElement.
-        /// </summary>
-        private static int[] DeleteElement(this IList<int> arrayInts, int indexOfElement)
-        {
-            var tmp = arrayInts[indexOfElement];
-            for (var j = indexOfElement; j < arrayInts.Count - 1; j++)
-                arrayInts[j] = arrayInts[j + 1];
-            arrayInts[arrayInts.Count - 1] = tmp;
-
-            var finalArr = new int[arrayInts.Count - 1];
-            for (var i = 0; i < finalArr.Length; i++)
-                finalArr[i] = arrayInts[i];
-
-            return finalArr;
-        }
-
-        /// <summary>
-        ///     Удаляет из массива
-        ///     <see cref="T:System.Int32" /> значений
-        ///     элементы больше указанного.
-        /// </summary>
-        private static void DeleteElemsGreaterThanNum(ref int[] arrayInts, double num)
-        {
-            for (var i = 0; i < arrayInts.Length;)
-                if (arrayInts[i] > num)
-                    arrayInts = arrayInts.DeleteElement(i);
-                else
-                    i++;
-        }
+        #region Пользоваетльский интерфейс
 
         /// <summary>
         ///     Предоставляет пользователю выбор ручного ввода countElem элементов или их генерации
@@ -334,20 +338,51 @@ namespace HT_Lab4_26_30
         }
 
         /// <summary>
-        ///     Соединяет 2 последовательности
-        ///     <see cref="T:System.Int32" />
-        ///     значений в одну конечную.
+        ///     Вывод меню с выбором продолжения выполнения программы или ее завершения.
         /// </summary>
-        private static int[] ConcatArrays(IReadOnlyList<int> arrayInts1,
-            IReadOnlyList<int> arrayInts2)
+        private static void Menu()
         {
-            var arrResult = new int[arrayInts1.Count + arrayInts2.Count];
-            for (var i = 0; i < arrResult.Length; i++)
-                arrResult[i] = i < arrayInts1.Count
-                    ? arrayInts1[i]
-                    : arrayInts2[i - arrayInts1.Count];
-            return arrResult;
+            do
+            {
+                Console.Write(MessageMenu);
+                var choiceSign = Console.ReadLine();
+                switch (choiceSign)
+                {
+                    case "+":
+                        Console.WriteLine(MessageMenuCont);
+                        return;
+                    case "-":
+                        Console.WriteLine(MessageMenuExit);
+                        Environment.Exit(123);
+                        return;
+                }
+
+                Console.WriteLine(MessageChoiceIncorrectInput);
+            } while (true);
         }
+
+        #endregion
+
+        #region Ввод размера последовательности
+
+        /// <summary>
+        ///     Ввод размера последовательности чисел.
+        /// </summary>
+        private static void ReadSize(out uint sizeU)
+        {
+            Console.Write(MessageInputCount);
+            bool isCorrect;
+            do
+            {
+                isCorrect = uint.TryParse(Console.ReadLine(), out sizeU);
+
+                Console.Write(isCorrect
+                    ? MessageSuccessInputCount
+                    : MessageFailInputCount);
+            } while (!isCorrect);
+        }
+
+        #endregion
 
         #endregion
 
@@ -388,7 +423,8 @@ namespace HT_Lab4_26_30
         private const string MessageSuccessInputCount = "Успешно введено количество элементов!\n";
 
         private const string MessageFailInputCount = "Ошибка! Введено нецелое число, " +
-                                                     "или целое, но меньше 0, или строка!" +
+                                                     "или целое, но меньше 0, или строка, " +
+                                                     "или слишком большое целое!" +
                                                      "\nВведите количество элементов заново: ";
 
         private const string MessageInputElem = "Введите элемент №";
