@@ -8,102 +8,214 @@ namespace HT_Lab4_26_30
     {
         private static void Main()
         {
-            ShowMainMenu();
-            Console.WriteLine(MessageMainInputSize);
-            ReadSize(out var n);
-            var arr = ChooseMethodToFillArray(n);
-            Console.WriteLine(MessageMainOutputArray);
-            WriteArray(arr);
+            MakeArray(out var arr, out var n);
+            MainMenu(arr, n);
 
-            Menu();
-
-            if (arr.Length > 0)
-            {
-                var average = Average(arr);
-                DeleteElemsGreaterThanNum(ref arr, average);
-                Console.WriteLine(MessageMainOutputArrayAfterDel + average);
-                WriteArray(arr);
-                Menu();
-            }
-
-            Console.WriteLine(MessageMainInputAddArray);
-            ReadSize(out var k);
-            var arrAdditional = ChooseMethodToFillArray(k);
-            Console.WriteLine(MessageMainEndOfInputAddArray);
-            Console.WriteLine(MessageMainOutputAddArray);
-            WriteArray(arrAdditional);
-            arr = ConcatArrays(arr, arrAdditional);
-            Console.WriteLine(MessageMainArrayWithAdd);
-            WriteArray(arr);
-
-            Menu();
-
-            if (arr.Length <= 0) return;
-            SwapEvenWithOddIndex(ref arr);
-            Console.WriteLine(MessageMainArrayAfterSwap);
-            WriteArray(arr);
-
-            Menu();
-
-            var findElem = SearchFirstNegat(arr);
-            Console.WriteLine(MessageMainSearchFirstNeg);
-            if (findElem > 0)
-            {
-                Console.WriteLine(MessageMainDidntFind);
-            }
-            else
-            {
-                Console.WriteLine(MessageMainResultOfSearch + findElem);
-                Console.WriteLine(MessageMainPosFindElem + _count);
-                Console.WriteLine(MessageMainCountOfCompars + _count);
-            }
-
-            Menu();
-
-            SortBySimpleInsert(ref arr);
-            Console.WriteLine(MessageMainSortedArray);
-            WriteArray(arr);
-
-            Menu();
-
-            var positOfElem = BinarySearch(arr, findElem);
-            Console.WriteLine(MessageMainBinarySearch);
-            if (positOfElem > 0)
-            {
-                Console.WriteLine(MessageMainPosFindElem + positOfElem);
-                Console.WriteLine(MessageMainCountOfCompars + _count);
-            }
-            else
-            {
-                Console.WriteLine(MessageMainCantFind);
-            }
-
-            Console.WriteLine(MessageMenuExit);
+            //     Console.WriteLine(MessageMainInputSize);
+            //     ReadSize(out var n);
+            //     var arr = ChooseMethodToFillArray(n);
+            //     Console.WriteLine(MessageMainOutputArray);
+            //     WriteArray(arr);
+            //
+            //     Menu();
+            //
+            //     if (arr.Length > 0)
+            //     {
+            //         var average = Average(arr);
+            //         DeleteElemsGreaterThanNum(ref arr, average);
+            //         Console.WriteLine(MessageMainOutputArrayAfterDel + average);
+            //         WriteArray(arr);
+            //         Menu();
+            //     }
+            //
+            //     Console.WriteLine(MessageMainInputAddArray);
+            //     ReadSize(out var k);
+            //     var arrAdditional = ChooseMethodToFillArray(k);
+            //     Console.WriteLine(MessageMainEndOfInputAddArray);
+            //     Console.WriteLine(MessageMainOutputAddArray);
+            //     WriteArray(arrAdditional);
+            //     arr = ConcatArrays(arr, arrAdditional);
+            //     Console.WriteLine(MessageMainArrayWithAdd);
+            //     WriteArray(arr);
+            //
+            //     Menu();
+            //
+            //     if (arr.Length <= 0) return;
+            //     SwapEvenWithOddIndex(ref arr);
+            //     Console.WriteLine(MessageMainArrayAfterSwap);
+            //     WriteArray(arr);
+            //
+            //     Menu();
+            //
+            //     var findElem = SearchFirstNegat(arr);
+            //     Console.WriteLine(MessageMainSearchFirstNeg);
+            //     if (findElem > 0)
+            //     {
+            //         Console.WriteLine(MessageMainDidntFind);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine(MessageMainResultOfSearch + findElem);
+            //         Console.WriteLine(MessageMainPosFindElem + _count);
+            //         Console.WriteLine(MessageMainCountOfCompars + _count);
+            //     }
+            //
+            //     Menu();
+            //
+            //     SortBySimpleInsert(ref arr);
+            //     Console.WriteLine(MessageMainSortedArray);
+            //     WriteArray(arr);
+            //
+            //     Menu();
+            //
+            //     var positOfElem = BinarySearch(arr, findElem);
+            //     Console.WriteLine(MessageMainBinarySearch);
+            //     if (positOfElem > 0)
+            //     {
+            //         Console.WriteLine(MessageMainPosFindElem + positOfElem);
+            //         Console.WriteLine(MessageMainCountOfCompars + _count);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine(MessageMainCantFind);
+            //     }
+            //
+            //     Console.WriteLine(MessageMenuExit);
         }
 
-        private static void ShowMainMenu()
+        private static void MakeArray(out int[] arr, out uint n)
         {
             Console.WriteLine("Здравствуйте! Выберите, что нужно сделать (введите номер):" +
                               "\n1) Сформировать массив вручную" +
-                              "\n2) Сформировать массив с помощью датчика случайных чисел");
-            Console.Write("Ваш выбор: ");
-            var choice = Console.ReadLine();
-            switch (choice)
-            {
-
-            }
-            Console.WriteLine("Выберите, что сделать (введите номер):" +
-                              "\n1) Сформировать массив вручную" +
                               "\n2) Сформировать массив с помощью датчика случайных чисел" +
-                              "\n3) Вывести массив на экран" +
-                              "\n4) Удалить элементы больше среднего арифметического элементов массива" +
-                              "\n5) Добавить K элементов в конец массива" +
-                              "\n6) Поменять местами элементы с четными и нечетными номерами" +
-                              "\n7) Найти первый отрицательный элемент, подсчитать количество сравнений" +
-                              "\n8) Отсортировать массив методом «Простое включение»" +
-                              "\n9) Поиск методом «Бинарный поиск» найденного в 7 пункте отрицательного элемента," +
-                              " перед этим отсортировав массив, подсчет количества сравнений, " +
-                              "но после поиска вернуть массив в исходное состояние");
+                              "\n3) Завершить исполнение программы");
+            do
+            {
+                Console.Write("Ваш выбор: ");
+                var choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Выбран ручной метод формирования массива");
+                        ReadSize(out n);
+                        arr = ReadArray(n);
+                        return;
+                    case "2":
+                        Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
+                        ReadSize(out n);
+                        arr = GenerateArray(n);
+                        return;
+                    case "3":
+                        Console.WriteLine("Завершение программы...");
+                        Environment.Exit(123);
+                        break;
+                }
+
+                Console.WriteLine("Введен неизвестный символ, введите номер заново");
+            } while (true);
+        }
+
+        private static void MainMenu(int[] arr, uint n)
+        {
+            do
+            {
+                Console.WriteLine("Выберите, что сделать (введите номер):" +
+                                  "\n1) Сформировать массив вручную" +
+                                  "\n2) Сформировать массив с помощью датчика случайных чисел" +
+                                  "\n3) Вывести массив на экран" +
+                                  "\n4) Удалить элементы больше среднего арифметического элементов массива" +
+                                  "\n5) Добавить K элементов в конец массива вручную" +
+                                  "\n6) Добавить K элементов в конец массива, сформированных с помощью " +
+                                  "датчика случайных чисел" +
+                                  "\n7) Поменять местами элементы с четными и нечетными номерами" +
+                                  "\n8) Найти первый отрицательный элемент, подсчитать количество сравнений" +
+                                  "\n9) Отсортировать массив методом «Простое включение»" +
+                                  "\n10) Поиск методом «Бинарный поиск» найденного в 7 пункте отрицательного элемента," +
+                                  " перед этим отсортировав массив, подсчет количества сравнений, " +
+                                  "но после поиска вернуть массив в исходное состояние" +
+                                  "\n11) Завершить исполнение программы");
+                Console.Write("Ваш выбор: ");
+                uint k;
+                int[] arrAdd;
+                int count;
+                var firstNeg = 0;
+                var choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Выбран ручной метод формирования массива");
+                        ReadSize(out n);
+                        arr = ReadArray(n);
+                        break;
+                    case "2":
+                        Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
+                        ReadSize(out n);
+                        arr = GenerateArray(n);
+                        break;
+                    case "3":
+                        Console.WriteLine("Выбран вывод массива");
+                        WriteArray(arr);
+                        break;
+                    case "4":
+                        Console.WriteLine(
+                            "Выбрано удаление элементов, больших среднего арифметического элементов массива");
+                        var average = Average(arr);
+                        Console.WriteLine($"Среднее арифметическое = {average}");
+                        DeleteElemsGreaterThanNum(ref arr, average);
+                        break;
+                    case "5":
+                        Console.WriteLine("Выбрано добавить К элементов в конец массива вручную");
+                        ReadSize(out k);
+                        arrAdd = ReadArray(k);
+                        Console.Write("Элементы: ");
+                        WriteArray(arrAdd);
+                        arr = ConcatArrays(arr, arrAdd);
+                        break;
+                    case "6":
+                        Console.WriteLine("Выбрано добавить K элементов в конец массива, сформированных с помощью " +
+                                          "датчика случайных чисел");
+                        ReadSize(out k);
+                        arrAdd = GenerateArray(k);
+                        Console.Write("Элементы: ");
+                        WriteArray(arrAdd);
+                        arr = ConcatArrays(arr, arrAdd);
+                        break;
+                    case "7":
+                        Console.WriteLine("Выбрано поменять местами элементы с четными и нечетными номерами");
+                        SwapEvenWithOddIndex(ref arr);
+                        break;
+                    case "8":
+                        Console.WriteLine(
+                            "Выбрано найти первый отрицательный элемент, подсчитать количество сравнений");
+                        firstNeg = SearchFirstNegat(arr, out count);
+                        Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
+                                          $"Позиция найденного элемента = {count}\n" +
+                                          $"Количество сравнений = {count}");
+                        break;
+                    case "9":
+                        Console.WriteLine("Выбрано отсортировать массив методом «Простое включение»");
+                        SortBySimpleInsert(ref arr);
+                        break;
+                    case "10":
+                        Console.WriteLine("Выбран поиск методом «Бинарный поиск» найденного в 7 пункте" +
+                                          " отрицательного элемента," +
+                                          " перед этим отсортировать массив, подсчитать количества сравнений, " +
+                                          "но после поиска вернуть массив в исходное состояние");
+                        var arrTmp = arr;
+                        SortBySimpleInsert(ref arr);
+                        var pos = BinarySearch(arr, firstNeg, out count);
+                        Console.WriteLine($"Позиция найденного элемента = {pos}\n" +
+                                          $"Количество сравнений = {count}");
+                        arr = arrTmp;
+                        break;
+
+                    case "11":
+                        Console.WriteLine("Завершение программы...");
+                        return;
+                }
+
+                Console.WriteLine("Введен неизвестный символ, введите номер заново");
+            } while (true);
         }
 
         #region Функции
@@ -126,9 +238,9 @@ namespace HT_Lab4_26_30
         ///     <see cref="T:System.Int32" /> значений
         ///     методом «Бинарный поиск», и подсчет количества сравнений.
         /// </summary>
-        private static int BinarySearch(IReadOnlyList<int> arrayInts, int findElem)
+        private static int BinarySearch(IReadOnlyList<int> arrayInts, int findElem, out int count)
         {
-            _count = 0;
+            count = 0;
             var leftIndex = 0;
             var rightIndex = arrayInts.Count - 1;
             do
@@ -139,10 +251,10 @@ namespace HT_Lab4_26_30
                 else
                     rightIndex = pivotIndex;
 
-                _count++;
+                count++;
             } while (leftIndex != rightIndex);
 
-            _count++;
+            count++;
             if (arrayInts[leftIndex] == findElem)
                 return leftIndex + 1;
 
@@ -263,12 +375,12 @@ namespace HT_Lab4_26_30
         ///     в массиве <see cref="T:System.Int32" /> значений
         ///     и подсчет количества сравнений.
         /// </summary>
-        private static int SearchFirstNegat(IEnumerable<int> arrayInts)
+        private static int SearchFirstNegat(IEnumerable<int> arrayInts, out int count)
         {
-            _count = 0;
+            count = 0;
             foreach (var element in arrayInts)
             {
-                _count++;
+                count++;
                 if (element < 0)
                     return element;
             }
@@ -313,54 +425,6 @@ namespace HT_Lab4_26_30
 
         #region Пользоваетльский интерфейс
 
-        /// <summary>
-        ///     Предоставляет пользователю выбор ручного ввода countElem элементов или их генерации
-        ///     с помощью датчика случайных чисел.
-        /// </summary>
-        private static int[] ChooseMethodToFillArray(uint countElem)
-        {
-            if (countElem == 0)
-                return new int[] { };
-            do
-            {
-                Console.Write(MessageChoice);
-                var inputSwitcher = Console.ReadLine();
-                switch (inputSwitcher)
-                {
-                    case "+":
-                        return ReadArray(countElem);
-                    case "-":
-                        return GenerateArray(countElem);
-                }
-
-                Console.WriteLine(MessageChoiceIncorrectInput);
-            } while (true);
-        }
-
-        /// <summary>
-        ///     Вывод меню с выбором продолжения выполнения программы или ее завершения.
-        /// </summary>
-        private static void Menu()
-        {
-            do
-            {
-                Console.Write(MessageMenu);
-                var choiceSign = Console.ReadLine();
-                switch (choiceSign)
-                {
-                    case "+":
-                        Console.WriteLine(MessageMenuCont);
-                        return;
-                    case "-":
-                        Console.WriteLine(MessageMenuExit);
-                        Environment.Exit(123);
-                        return;
-                }
-
-                Console.WriteLine(MessageChoiceIncorrectInput);
-            } while (true);
-        }
-
         #endregion
 
         #region Ввод размера последовательности
@@ -388,30 +452,6 @@ namespace HT_Lab4_26_30
 
         #region Литеральные константы
 
-        private const string MessageMainBinarySearch = "Поиск найденного ранее элемента методом \"Двоичный поиск\"";
-
-        private const string MessageMainArrayAfterSwap = "Массив после перестановки элементов с" +
-                                                         " четными и нечетными номерами:";
-
-        private const string MessageMainDidntFind = "Элемент не найден";
-
-        private const string MessageMainPosFindElem = "Позиция найденного элемента: ";
-
-        private const string MessageMainCountOfCompars = "Количество сравнений: ";
-
-        private const string MessageMainResultOfSearch = "Результат поиска первого отрицательного элемента: ";
-
-        private const string MessageMainSearchFirstNeg = "Поиск первого отрицательного элемента";
-
-        private const string MessageMainSortedArray = "Массив после сортировки методом \"Простое включение\":";
-
-        private const string MessageMainCantFind = "Элемент для поиска в отсортированном массиве не определен";
-        private const string MessageMenuExit = "Программа завершается...";
-
-        private const string MessageMenuCont = "Программа продолжается...\n";
-
-        private const string MessageMenu = "Продолжить выполнение программы (+) " +
-                                           "или завершить (-)? Ваш выбор [+/-]: ";
 
         private const string MessageGenerate = "Выбран метод заполнения " +
                                                "случайными числами";
@@ -433,26 +473,6 @@ namespace HT_Lab4_26_30
                                                     + "элемент №";
 
         private const string MessageWriteEmptyArray = "(пусто)";
-
-        private const string MessageChoice = "Вводить элементы с клавиатуры (+) " +
-                                             "или заполнить случайными числами (-)? Ваш выбор (+/-): ";
-
-        private const string MessageChoiceIncorrectInput = "Вы ввели неизвестный символ, введите заново";
-
-        private const string MessageMainInputSize = "Ввод массива чисел";
-
-        private const string MessageMainArrayWithAdd = "Массив после добавления в него дополнительных элементов:";
-
-        private const string MessageMainOutputAddArray = "Дополнительные элементы:";
-
-        private const string MessageMainEndOfInputAddArray = "Конец ввода дополнительных элементов";
-
-        private const string MessageMainInputAddArray = "Ввод дополнительных элементов к массиву";
-
-        private const string MessageMainOutputArrayAfterDel = "Массив после удаления из него элементов, больших " +
-                                                              "среднего арифметического элементов массива = ";
-
-        private const string MessageMainOutputArray = "Массив:";
 
         #endregion
     }
