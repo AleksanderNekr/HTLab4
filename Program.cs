@@ -8,79 +8,8 @@ namespace HT_Lab4_26_30
     {
         private static void Main()
         {
-            MakeArray(out var arr, out var n);
-            MainMenu(arr, n);
-
-            //     Console.WriteLine(MessageMainInputSize);
-            //     ReadSize(out var n);
-            //     var arr = ChooseMethodToFillArray(n);
-            //     Console.WriteLine(MessageMainOutputArray);
-            //     WriteArray(arr);
-            //
-            //     Menu();
-            //
-            //     if (arr.Length > 0)
-            //     {
-            //         var average = Average(arr);
-            //         DeleteElemsGreaterThanNum(ref arr, average);
-            //         Console.WriteLine(MessageMainOutputArrayAfterDel + average);
-            //         WriteArray(arr);
-            //         Menu();
-            //     }
-            //
-            //     Console.WriteLine(MessageMainInputAddArray);
-            //     ReadSize(out var k);
-            //     var arrAdditional = ChooseMethodToFillArray(k);
-            //     Console.WriteLine(MessageMainEndOfInputAddArray);
-            //     Console.WriteLine(MessageMainOutputAddArray);
-            //     WriteArray(arrAdditional);
-            //     arr = ConcatArrays(arr, arrAdditional);
-            //     Console.WriteLine(MessageMainArrayWithAdd);
-            //     WriteArray(arr);
-            //
-            //     Menu();
-            //
-            //     if (arr.Length <= 0) return;
-            //     SwapEvenWithOddIndex(ref arr);
-            //     Console.WriteLine(MessageMainArrayAfterSwap);
-            //     WriteArray(arr);
-            //
-            //     Menu();
-            //
-            //     var findElem = SearchFirstNegat(arr);
-            //     Console.WriteLine(MessageMainSearchFirstNeg);
-            //     if (findElem > 0)
-            //     {
-            //         Console.WriteLine(MessageMainDidntFind);
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine(MessageMainResultOfSearch + findElem);
-            //         Console.WriteLine(MessageMainPosFindElem + _count);
-            //         Console.WriteLine(MessageMainCountOfCompars + _count);
-            //     }
-            //
-            //     Menu();
-            //
-            //     SortBySimpleInsert(ref arr);
-            //     Console.WriteLine(MessageMainSortedArray);
-            //     WriteArray(arr);
-            //
-            //     Menu();
-            //
-            //     var positOfElem = BinarySearch(arr, findElem);
-            //     Console.WriteLine(MessageMainBinarySearch);
-            //     if (positOfElem > 0)
-            //     {
-            //         Console.WriteLine(MessageMainPosFindElem + positOfElem);
-            //         Console.WriteLine(MessageMainCountOfCompars + _count);
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine(MessageMainCantFind);
-            //     }
-            //
-            //     Console.WriteLine(MessageMenuExit);
+            MakeArray(out var arr, out _);
+            MainMenu(arr, out _);
         }
 
         private static void MakeArray(out int[] arr, out uint n)
@@ -115,11 +44,12 @@ namespace HT_Lab4_26_30
             } while (true);
         }
 
-        private static void MainMenu(int[] arr, uint n)
+        private static void MainMenu(int[] arr, out uint n)
         {
+            var firstNeg = 0;
             do
             {
-                Console.WriteLine("Выберите, что сделать (введите номер):" +
+                Console.WriteLine("\nВыберите, что сделать (введите номер):" +
                                   "\n1) Сформировать массив вручную" +
                                   "\n2) Сформировать массив с помощью датчика случайных чисел" +
                                   "\n3) Вывести массив на экран" +
@@ -135,11 +65,10 @@ namespace HT_Lab4_26_30
                                   "но после поиска вернуть массив в исходное состояние" +
                                   "\n11) Завершить исполнение программы");
                 Console.Write("Ваш выбор: ");
+                var choice = Console.ReadLine();
                 uint k;
                 int[] arrAdd;
                 int count;
-                var firstNeg = 0;
-                var choice = Console.ReadLine();
                 switch (choice)
                 {
                     case "1":
@@ -211,10 +140,12 @@ namespace HT_Lab4_26_30
 
                     case "11":
                         Console.WriteLine("Завершение программы...");
+                        n = 0;
                         return;
+                    default:
+                        Console.WriteLine("Введен неизвестный символ, введите номер заново");
+                        break;
                 }
-
-                Console.WriteLine("Введен неизвестный символ, введите номер заново");
             } while (true);
         }
 
@@ -228,8 +159,11 @@ namespace HT_Lab4_26_30
         /// </summary>
         private static double Average(IReadOnlyCollection<int> arrayInts)
         {
-            var sum = arrayInts.Aggregate(0.0,
-                (current, element) => current + element);
+            var sum = 0.0;
+            foreach (var element in arrayInts)
+            {
+                sum += element;
+            }
             return sum / arrayInts.Count;
         }
 
@@ -423,10 +357,6 @@ namespace HT_Lab4_26_30
 
         #endregion
 
-        #region Пользоваетльский интерфейс
-
-        #endregion
-
         #region Ввод размера последовательности
 
         /// <summary>
@@ -450,8 +380,7 @@ namespace HT_Lab4_26_30
 
         #endregion
 
-        #region Литеральные константы
-
+        #region Литеральные константы для
 
         private const string MessageGenerate = "Выбран метод заполнения " +
                                                "случайными числами";
