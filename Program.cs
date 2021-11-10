@@ -11,6 +11,7 @@ namespace HT_Lab4_26_30
             MainMenu(arr, out _);
         }
 
+        // TODO: нормальную реакцию функций на пустой массив
 
         #region Функции
 
