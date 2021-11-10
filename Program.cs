@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace HT_Lab4_26_30
 {
@@ -254,7 +253,8 @@ namespace HT_Lab4_26_30
         {
             var arrayInts = new int[sizeArray];
 
-            Console.WriteLine(MessageGenerate);
+            Console.WriteLine("Выбран метод заполнения " +
+                              "случайными числами");
             var generator = new Random();
             for (var i = 0; i < sizeArray; i++)
                 arrayInts[i] = generator.Next(-100, 101);
@@ -271,17 +271,18 @@ namespace HT_Lab4_26_30
         {
             var arrayInts = new int[sizeArray];
 
-            Console.WriteLine(MessageInputConsole);
+            Console.WriteLine("Выбран ручной метод ввода " +
+                              "целочисленных элементов");
             for (var i = 0; i < sizeArray; i++)
             {
                 bool isConvert;
                 do
                 {
-                    Console.Write(MessageInputElem + (i + 1) + ": ");
+                    Console.Write($"Введите элемент №{(i + 1)}: ");
                     isConvert = int.TryParse(
                         Console.ReadLine(), out arrayInts[i]);
                     if (!isConvert)
-                        Console.WriteLine(MessageFailInputElem + (i + 1));
+                        Console.WriteLine($"Ошибка! Введен не как целое число элемент №{(i + 1)}");
                 } while (!isConvert);
             }
 
@@ -351,7 +352,7 @@ namespace HT_Lab4_26_30
             }
             else
             {
-                Console.WriteLine(MessageWriteEmptyArray);
+                Console.WriteLine("Массив не содержит элементов");
             }
         }
 
@@ -364,44 +365,22 @@ namespace HT_Lab4_26_30
         /// </summary>
         private static void ReadSize(out uint sizeU)
         {
-            Console.Write(MessageInputCount);
+            Console.Write("Введите количество элементов: ");
             bool isCorrect;
             do
             {
                 isCorrect = uint.TryParse(Console.ReadLine(), out sizeU);
 
                 Console.Write(isCorrect
-                    ? MessageSuccessInputCount
-                    : MessageFailInputCount);
+                    ? "Успешно введено количество элементов!\n"
+                    : "Ошибка! Введено нецелое число, " +
+                      "или целое, но меньше 0, или строка, " +
+                      "или слишком большое целое!" +
+                      "\nВведите количество элементов заново: ");
             } while (!isCorrect);
         }
 
         #endregion
-
-        #endregion
-
-        #region Литеральные константы для
-
-        private const string MessageGenerate = "Выбран метод заполнения " +
-                                               "случайными числами";
-
-        private const string MessageInputConsole = "Выбран ручной метод ввода " +
-                                                   "целочисленных элементов";
-
-        private const string MessageInputCount = "Введите количество элементов: ";
-        private const string MessageSuccessInputCount = "Успешно введено количество элементов!\n";
-
-        private const string MessageFailInputCount = "Ошибка! Введено нецелое число, " +
-                                                     "или целое, но меньше 0, или строка, " +
-                                                     "или слишком большое целое!" +
-                                                     "\nВведите количество элементов заново: ";
-
-        private const string MessageInputElem = "Введите элемент №";
-
-        private const string MessageFailInputElem = "Ошибка! Введен не как целое число "
-                                                    + "элемент №";
-
-        private const string MessageWriteEmptyArray = "(пусто)";
 
         #endregion
     }
