@@ -27,11 +27,13 @@ namespace HT_Lab4_26_30
                         Console.WriteLine("Выбран ручной метод формирования массива");
                         ReadSize(out n);
                         arr = ReadArray(n);
+                        Console.WriteLine("Массив успешно сформирован");
                         return;
                     case "2":
                         Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
                         ReadSize(out n);
                         arr = GenerateArray(n);
+                        Console.WriteLine("Массив успешно сформирован");
                         return;
                     case "3":
                         Console.WriteLine("Завершение программы...");
@@ -39,7 +41,7 @@ namespace HT_Lab4_26_30
                         break;
                 }
 
-                Console.WriteLine("Введен неизвестный символ, введите номер заново");
+                Console.WriteLine("Введен неизвестный символ, введите номер операции заново");
             } while (true);
         }
 
@@ -48,9 +50,12 @@ namespace HT_Lab4_26_30
             var firstNeg = 0;
             do
             {
+                Console.WriteLine("Для продолжения нажмите любую клавишу...");
+                Console.ReadKey();
+
                 Console.WriteLine("\nВыберите, что сделать (введите номер):" +
-                                  "\n1) Сформировать массив вручную" +
-                                  "\n2) Сформировать массив с помощью датчика случайных чисел" +
+                                  "\n1) Сформировать новый массив вручную" +
+                                  "\n2) Сформировать новый массив с помощью датчика случайных чисел" +
                                   "\n3) Вывести массив на экран" +
                                   "\n4) Удалить элементы больше среднего арифметического элементов массива" +
                                   "\n5) Добавить K элементов в конец массива вручную" +
@@ -59,9 +64,8 @@ namespace HT_Lab4_26_30
                                   "\n7) Поменять местами элементы с четными и нечетными номерами" +
                                   "\n8) Найти первый отрицательный элемент, подсчитать количество сравнений" +
                                   "\n9) Отсортировать массив методом «Простое включение»" +
-                                  "\n10) Поиск методом «Бинарный поиск» найденного в 7 пункте отрицательного элемента," +
-                                  " перед этим отсортировав массив, подсчет количества сравнений, " +
-                                  "но после поиска вернуть массив в исходное состояние" +
+                                  "\n10) Поиск методом «Бинарный поиск» найденного в 8 пункте отрицательного элемента," +
+                                  " подсчет количества сравнений," +
                                   "\n11) Завершить исполнение программы");
                 Console.Write("Ваш выбор: ");
                 var choice = Console.ReadLine();
@@ -74,21 +78,22 @@ namespace HT_Lab4_26_30
                         Console.WriteLine("Выбран ручной метод формирования массива");
                         ReadSize(out n);
                         arr = ReadArray(n);
+                        Console.WriteLine("Массив успешно сформирован");
                         break;
                     case "2":
                         Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
                         ReadSize(out n);
                         arr = GenerateArray(n);
+                        Console.WriteLine("Массив успешно сформирован");
                         break;
                     case "3":
                         Console.WriteLine("Выбран вывод массива");
                         WriteArray(arr);
                         break;
                     case "4":
-                        Console.WriteLine(
-                            "Выбрано удаление элементов, больших среднего арифметического элементов массива");
                         var average = Average(arr);
-                        Console.WriteLine($"Среднее арифметическое = {average}");
+                        Console.WriteLine("Выбрано удаление элементов, больших" +
+                                          $" среднего арифметического элементов массива = {average}");
                         DeleteElemsGreaterThanNum(ref arr, average);
                         break;
                     case "5":
@@ -113,39 +118,68 @@ namespace HT_Lab4_26_30
                         SwapEvenWithOddIndex(ref arr);
                         break;
                     case "8":
-                        Console.WriteLine(
-                            "Выбрано найти первый отрицательный элемент, подсчитать количество сравнений");
+                        Console.WriteLine("Выбрано найти первый отрицательный элемент," +
+                                          " подсчитать количество сравнений");
                         firstNeg = SearchFirstNegat(arr, out count);
-                        Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
-                                          $"Позиция найденного элемента = {count}\n" +
-                                          $"Количество сравнений = {count}");
+                        if (firstNeg == 1)
+                            Console.WriteLine("Последовательность не содержит отрицательных элементов!");
+                        else
+                            Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
+                                              $"Позиция найденного элемента = {count}\n" +
+                                              $"Количество сравнений = {count}");
+
                         break;
                     case "9":
                         Console.WriteLine("Выбрано отсортировать массив методом «Простое включение»");
                         SortBySimpleInsert(ref arr);
+                        Console.WriteLine("Массив успешно отсортирован");
                         break;
                     case "10":
-                        Console.WriteLine("Выбран поиск методом «Бинарный поиск» найденного в 7 пункте" +
-                                          " отрицательного элемента," +
-                                          " перед этим отсортировать массив, подсчитать количества сравнений, " +
-                                          "но после поиска вернуть массив в исходное состояние");
-                        var arrTmp = arr;
-                        SortBySimpleInsert(ref arr);
-                        var pos = BinarySearch(arr, firstNeg, out count);
-                        Console.WriteLine($"Позиция найденного элемента = {pos}\n" +
-                                          $"Количество сравнений = {count}");
-                        arr = arrTmp;
-                        break;
+                        Console.WriteLine("Выбран поиск методом «Бинарный поиск» найденного в 8 пункте" +
+                                          " отрицательного элемента, подсчитать количества сравнений");
+                        if (firstNeg >= 0)
+                        {
+                            Console.WriteLine("Сначала нужно найти этот элемент!");
+                        }
+                        else
+                        {
+                            if (IsSorted(arr))
+                            {
+                                var pos = BinarySearch(arr, firstNeg, out count);
+                                Console.WriteLine($"Позиция найденного элемента = {pos}\n" +
+                                                  $"Количество сравнений = {count}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Сначала нужно отсортировать массив!");
+                            }
+                        }
 
+                        break;
                     case "11":
                         Console.WriteLine("Завершение программы...");
                         n = 0;
                         return;
                     default:
-                        Console.WriteLine("Введен неизвестный символ, введите номер заново");
+                        Console.WriteLine("Введен неизвестный символ! Ничего предприниматься не будет");
                         break;
                 }
             } while (true);
+        }
+
+        /// <summary>
+        ///     Проверяет, сортирована ли последовательность
+        ///     <see cref="T:System.Int32" /> значений.
+        /// </summary>
+        private static bool IsSorted(IReadOnlyList<int> arr)
+        {
+            for (var i = 1; i < arr.Count;)
+                if (arr[i - 1] < arr[i])
+                    i++;
+                else
+                    return false;
+
+            return true;
         }
 
         #region Функции
@@ -159,10 +193,7 @@ namespace HT_Lab4_26_30
         private static double Average(IReadOnlyCollection<int> arrayInts)
         {
             var sum = 0.0;
-            foreach (var element in arrayInts)
-            {
-                sum += element;
-            }
+            foreach (var element in arrayInts) sum += element;
             return sum / arrayInts.Count;
         }
 
@@ -253,8 +284,6 @@ namespace HT_Lab4_26_30
         {
             var arrayInts = new int[sizeArray];
 
-            Console.WriteLine("Выбран метод заполнения " +
-                              "случайными числами");
             var generator = new Random();
             for (var i = 0; i < sizeArray; i++)
                 arrayInts[i] = generator.Next(-100, 101);
@@ -270,19 +299,16 @@ namespace HT_Lab4_26_30
         private static int[] ReadArray(uint sizeArray)
         {
             var arrayInts = new int[sizeArray];
-
-            Console.WriteLine("Выбран ручной метод ввода " +
-                              "целочисленных элементов");
             for (var i = 0; i < sizeArray; i++)
             {
                 bool isConvert;
                 do
                 {
-                    Console.Write($"Введите элемент №{(i + 1)}: ");
+                    Console.Write($"Введите элемент №{i + 1}: ");
                     isConvert = int.TryParse(
                         Console.ReadLine(), out arrayInts[i]);
                     if (!isConvert)
-                        Console.WriteLine($"Ошибка! Введен не как целое число элемент №{(i + 1)}");
+                        Console.WriteLine($"Ошибка! Введен не как целое число элемент №{i + 1}");
                 } while (!isConvert);
             }
 
