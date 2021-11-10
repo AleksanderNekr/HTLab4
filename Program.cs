@@ -7,46 +7,7 @@ namespace HT_Lab4_26_30
     {
         private static void Main()
         {
-            MakeArray(out var arr, out _);
-            MainMenu(arr, out _);
-        }
-
-        private static void MakeArray(out int[] arr, out uint n)
-        {
-            Console.WriteLine("Здравствуйте! Выберите, что нужно сделать (введите номер):" +
-                              "\n1) Сформировать массив вручную" +
-                              "\n2) Сформировать массив с помощью датчика случайных чисел" +
-                              "\n3) Завершить исполнение программы");
-            do
-            {
-                Console.Write("Ваш выбор: ");
-                var choice = Console.ReadLine();
-                switch (choice)
-                {
-                    case "1":
-                        Console.WriteLine("Выбран ручной метод формирования массива");
-                        ReadSize(out n);
-                        arr = ReadArray(n);
-                        Console.WriteLine("Массив успешно сформирован");
-                        return;
-                    case "2":
-                        Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
-                        ReadSize(out n);
-                        arr = GenerateArray(n);
-                        Console.WriteLine("Массив успешно сформирован");
-                        return;
-                    case "3":
-                        Console.WriteLine("Завершение программы...");
-                        Environment.Exit(123);
-                        break;
-                }
-
-                Console.WriteLine("Введен неизвестный символ, введите номер операции заново");
-            } while (true);
-        }
-
-        private static void MainMenu(int[] arr, out uint n)
-        {
+            FirstMenu(out var arr, out var n);
             var firstNeg = 0;
             do
             {
@@ -102,7 +63,7 @@ namespace HT_Lab4_26_30
                         arrAdd = ReadArray(k);
                         Console.Write("Элементы: ");
                         WriteArray(arrAdd);
-                        arr = ConcatArrays(arr, arrAdd);
+                        arr = Concat(arr, arrAdd);
                         break;
                     case "6":
                         Console.WriteLine("Выбрано добавить K элементов в конец массива, сформированных с помощью " +
@@ -111,11 +72,11 @@ namespace HT_Lab4_26_30
                         arrAdd = GenerateArray(k);
                         Console.Write("Элементы: ");
                         WriteArray(arrAdd);
-                        arr = ConcatArrays(arr, arrAdd);
+                        arr = Concat(arr, arrAdd);
                         break;
                     case "7":
                         Console.WriteLine("Выбрано поменять местами элементы с четными и нечетными номерами");
-                        SwapEvenWithOddIndex(ref arr);
+                        SwapEvenOddIndex(ref arr);
                         break;
                     case "8":
                         Console.WriteLine("Выбрано найти первый отрицательный элемент," +
@@ -131,7 +92,7 @@ namespace HT_Lab4_26_30
                         break;
                     case "9":
                         Console.WriteLine("Выбрано отсортировать массив методом «Простое включение»");
-                        SortBySimpleInsert(ref arr);
+                        Sort(ref arr);
                         Console.WriteLine("Массив успешно отсортирован");
                         break;
                     case "10":
@@ -143,27 +104,65 @@ namespace HT_Lab4_26_30
                         }
                         else
                         {
-                            if (IsSorted(arr))
+                            var pos = BinarySearch(arr, firstNeg, out count);
+                            switch (pos)
                             {
-                                var pos = BinarySearch(arr, firstNeg, out count);
-                                Console.WriteLine($"Позиция найденного элемента = {pos}\n" +
-                                                  $"Количество сравнений = {count}");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Сначала нужно отсортировать массив!");
+                                case >= 0:
+                                    Console.WriteLine($"Искомый элемент = {firstNeg}\n" +
+                                                      $"Позиция найденного элемента = {pos}\n" +
+                                                      $"Количество сравнений = {count}");
+                                    break;
+                                case -1:
+                                    Console.WriteLine("Массив не содержит отрицательных элементов");
+                                    break;
                             }
                         }
 
                         break;
                     case "11":
                         Console.WriteLine("Завершение программы...");
-                        n = 0;
                         return;
                     default:
                         Console.WriteLine("Введен неизвестный символ! Ничего предприниматься не будет");
                         break;
                 }
+            } while (true);
+        }
+
+        /// <summary>
+        ///     Начальное меню.
+        /// </summary>
+        private static void FirstMenu(out int[] arr, out uint n)
+        {
+            Console.WriteLine("Здравствуйте! Выберите, что нужно сделать (введите номер):" +
+                              "\n1) Сформировать массив вручную" +
+                              "\n2) Сформировать массив с помощью датчика случайных чисел" +
+                              "\n3) Завершить исполнение программы");
+            do
+            {
+                Console.Write("Ваш выбор: ");
+                var choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Выбран ручной метод формирования массива");
+                        ReadSize(out n);
+                        arr = ReadArray(n);
+                        Console.WriteLine("Массив успешно сформирован");
+                        return;
+                    case "2":
+                        Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
+                        ReadSize(out n);
+                        arr = GenerateArray(n);
+                        Console.WriteLine("Массив успешно сформирован");
+                        return;
+                    case "3":
+                        Console.WriteLine("Завершение программы...");
+                        Environment.Exit(123);
+                        break;
+                }
+
+                Console.WriteLine("Введен неизвестный символ, введите номер операции заново");
             } while (true);
         }
 
@@ -174,7 +173,7 @@ namespace HT_Lab4_26_30
         private static bool IsSorted(IReadOnlyList<int> arr)
         {
             for (var i = 1; i < arr.Count;)
-                if (arr[i - 1] < arr[i])
+                if (arr[i - 1] <= arr[i])
                     i++;
                 else
                     return false;
@@ -193,36 +192,43 @@ namespace HT_Lab4_26_30
         private static double Average(IReadOnlyCollection<int> arrayInts)
         {
             var sum = 0.0;
-            foreach (var element in arrayInts) sum += element;
+            foreach (var element in arrayInts)
+                sum += element;
             return sum / arrayInts.Count;
         }
 
         /// <summary>
-        ///     Поиск указанного элемента в последовательности
+        ///     Поиск нимера указанного элемента в последовательности
         ///     <see cref="T:System.Int32" /> значений
         ///     методом «Бинарный поиск», и подсчет количества сравнений.
         /// </summary>
         private static int BinarySearch(IReadOnlyList<int> arrayInts, int findElem, out int count)
         {
             count = 0;
-            var leftIndex = 0;
-            var rightIndex = arrayInts.Count - 1;
-            do
+            if (IsSorted(arrayInts))
             {
-                var pivotIndex = (leftIndex + rightIndex) / 2;
-                if (arrayInts[pivotIndex] < findElem)
-                    leftIndex = pivotIndex + 1;
-                else
-                    rightIndex = pivotIndex;
+                var leftIndex = 0;
+                var rightIndex = arrayInts.Count - 1;
+                do
+                {
+                    var pivotIndex = (leftIndex + rightIndex) / 2;
+                    if (arrayInts[pivotIndex] < findElem)
+                        leftIndex = pivotIndex + 1;
+                    else
+                        rightIndex = pivotIndex;
+
+                    count++;
+                } while (leftIndex != rightIndex);
 
                 count++;
-            } while (leftIndex != rightIndex);
+                if (arrayInts[leftIndex] == findElem)
+                    return leftIndex + 1;
 
-            count++;
-            if (arrayInts[leftIndex] == findElem)
-                return leftIndex + 1;
+                return -1;
+            }
 
-            return -1;
+            Console.WriteLine("Сначала нужно отсортировать массив!");
+            return -2;
         }
 
         /// <summary>
@@ -230,7 +236,7 @@ namespace HT_Lab4_26_30
         ///     <see cref="T:System.Int32" />
         ///     значений в одну конечную.
         /// </summary>
-        private static int[] ConcatArrays(IReadOnlyList<int> arrayInts1,
+        private static int[] Concat(IReadOnlyList<int> arrayInts1,
             IReadOnlyList<int> arrayInts2)
         {
             var arrResult = new int[arrayInts1.Count + arrayInts2.Count];
@@ -246,7 +252,7 @@ namespace HT_Lab4_26_30
         ///     <see cref="T:System.Int32" />
         ///     значений элемент с индексом indexOfElement.
         /// </summary>
-        private static int[] DeleteElement(this IList<int> arrayInts, int indexOfElement)
+        private static int[] Delete(IList<int> arrayInts, int indexOfElement)
         {
             var tmp = arrayInts[indexOfElement];
             for (var j = indexOfElement; j < arrayInts.Count - 1; j++)
@@ -269,7 +275,7 @@ namespace HT_Lab4_26_30
         {
             for (var i = 0; i < arrayInts.Length;)
                 if (arrayInts[i] > num)
-                    arrayInts = arrayInts.DeleteElement(i);
+                    arrayInts = Delete(arrayInts, i);
                 else
                     i++;
         }
@@ -319,7 +325,7 @@ namespace HT_Lab4_26_30
         ///     Сортировка массива <see cref="T:System.Int32" /> значений
         ///     методом «Простое включение».
         /// </summary>
-        private static void SortBySimpleInsert(ref int[] arrayInts)
+        private static void Sort(ref int[] arrayInts)
         {
             for (var i = 1; i < arrayInts.Length; i++)
             {
@@ -353,7 +359,7 @@ namespace HT_Lab4_26_30
         ///     Перестановка элементов с четными и нечетными индексами
         ///     в массиве <see cref="T:System.Int32" /> значений .
         /// </summary>
-        private static void SwapEvenWithOddIndex(ref int[] arrayInts)
+        private static void SwapEvenOddIndex(ref int[] arrayInts)
         {
             for (var i = 1; i < arrayInts.Length; i += 2)
             {
