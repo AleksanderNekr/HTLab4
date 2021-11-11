@@ -28,27 +28,27 @@ namespace HT_Lab4_26_30
                               "\n3) Завершить исполнение программы");
             do
             {
-                Console.Write("Ваш выбор: ");
+                Console.Write("\nВаш выбор: ");
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("Выбран ручной метод формирования массива");
+                        Console.WriteLine("\nВыбран ручной метод формирования массива\n");
                         ReadSize(out n);
                         arr = ReadArray(n);
                         return;
                     case "2":
-                        Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
+                        Console.WriteLine("\nВыбран метод заполнения массива с помощью датчика случайных чисел\n");
                         ReadSize(out n);
                         arr = GenerateArray(n);
                         return;
                     case "3":
-                        Console.WriteLine("Завершение программы...");
+                        Console.WriteLine("\nЗавершение программы...\n");
                         Environment.Exit(123);
                         break;
                 }
 
-                Console.WriteLine("Введен неизвестный символ, введите номер операции заново");
+                Console.WriteLine("\nВведен неизвестный символ, введите номер операции заново\n");
             } while (true);
         }
 
@@ -57,8 +57,9 @@ namespace HT_Lab4_26_30
             var firstNeg = 0;
             do
             {
-                Console.WriteLine("Для продолжения нажмите любую клавишу...");
+                Console.Write("\nДля продолжения нажмите любую клавишу...");
                 Console.ReadKey();
+                Console.WriteLine();
 
                 Console.WriteLine("\nВыберите, что сделать (введите номер):" +
                                   "\n1) Сформировать новый массив вручную" +
@@ -74,7 +75,7 @@ namespace HT_Lab4_26_30
                                   "\n10) Поиск методом «Бинарный поиск» найденного в 8 пункте отрицательного элемента," +
                                   " подсчет количества сравнений" +
                                   "\n11) Завершить исполнение программы");
-                Console.Write("Ваш выбор: ");
+                Console.Write("\nВаш выбор: ");
                 var choice = Console.ReadLine();
                 uint k;
                 int[] arrAdd;
@@ -82,48 +83,48 @@ namespace HT_Lab4_26_30
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("Выбран ручной метод формирования массива");
+                        Console.WriteLine("\nВыбран ручной метод формирования массива\n");
                         ReadSize(out n);
                         arr = ReadArray(n);
                         break;
                     case "2":
-                        Console.WriteLine("Выбран метод заполнения массива с помощью датчика случайных чисел");
+                        Console.WriteLine("\nВыбран метод заполнения массива с помощью датчика случайных чисел\n");
                         ReadSize(out n);
                         arr = GenerateArray(n);
                         break;
                     case "3":
-                        Console.WriteLine("Выбран вывод массива");
+                        Console.WriteLine("\nВыбран вывод массива\n");
                         WriteArray(arr);
                         break;
                     case "4":
                         var average = Average(arr);
-                        Console.WriteLine("Выбрано удаление элементов, больших" +
+                        Console.WriteLine("\nВыбрано удаление элементов, больших" +
                                           $" среднего арифметического элементов массива = {average}");
 
                         if (arr.Length > 0)
                             DeleteGreaterThanNum(ref arr, average);
                         else
-                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                            Console.WriteLine("\nНельзя выполнить, так как массив пустой!\n");
                         break;
                     case "5":
-                        Console.WriteLine("Выбрано добавить К элементов в конец массива вручную");
+                        Console.WriteLine("\nВыбрано добавить К элементов в конец массива вручную\n");
                         ReadSize(out k);
                         arrAdd = ReadArray(k);
                         if (k > 0)
                         {
-                            Console.Write("Элементы: ");
+                            Console.Write("\nЭлементы: ");
                             WriteArray(arrAdd);
                         }
                         else
                         {
-                            Console.WriteLine("Дополнительных элементов нет!");
+                            Console.WriteLine("\nДополнительных элементов нет!\n");
                         }
 
                         arr = Concat(arr, arrAdd);
                         break;
                     case "6":
-                        Console.WriteLine("Выбрано добавить K элементов в конец массива, сформированных с помощью " +
-                                          "датчика случайных чисел");
+                        Console.WriteLine("\nВыбрано добавить K элементов в конец массива, сформированных с помощью " +
+                                          "датчика случайных чисел\n");
                         ReadSize(out k);
                         arrAdd = GenerateArray(k);
                         if (k > 0)
@@ -133,59 +134,60 @@ namespace HT_Lab4_26_30
                         }
                         else
                         {
-                            Console.WriteLine("Дополнительных элементов нет!");
+                            Console.WriteLine("\nДополнительных элементов нет!\n");
                         }
 
                         arr = Concat(arr, arrAdd);
                         break;
                     case "7":
-                        Console.WriteLine("Выбрано поменять местами элементы с четными и нечетными номерами");
+                        Console.WriteLine("\nВыбрано поменять местами элементы с четными и нечетными номерами\n");
                         if (arr.Length > 0)
                         {
                             SwapEvenOddIndex(ref arr);
                         }
                         else
                         {
-                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                            Console.WriteLine("\nНельзя выполнить, так как массив пустой!\n");
                         }
 
                         break;
                     case "8":
-                        Console.WriteLine("Выбрано найти первый отрицательный элемент," +
-                                          " подсчитать количество сравнений");
+                        Console.WriteLine("\nВыбрано найти первый отрицательный элемент," +
+                                          " подсчитать количество сравнений\n");
                         if (arr.Length > 0)
                         {
                             firstNeg = SearchFirstNegat(arr, out count);
                             if (firstNeg == 1)
-                                Console.WriteLine("Последовательность не содержит отрицательных элементов!");
+                                Console.WriteLine("Последовательность не содержит отрицательных элементов!\n");
                             else
                                 Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
-                                                  $"Количество сравнений = {count}");
+                                                  $"Количество сравнений = {count}\n");
                         }
                         else
                         {
-                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                            Console.WriteLine("\nНельзя выполнить, так как массив пустой!\n");
                         }
 
 
                         break;
                     case "9":
-                        Console.WriteLine("Выбрано отсортировать массив методом «Простое включение»");
+                        Console.WriteLine("\nВыбрано отсортировать массив методом «Простое включение»\n");
                         if (arr.Length > 0)
                         {
                             Sort(ref arr);
                         }
                         else
                         {
-                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                            Console.WriteLine("\nНельзя выполнить, так как массив пустой!\n");
                         }
+
                         break;
                     case "10":
-                        Console.WriteLine("Выбран поиск методом «Бинарный поиск» найденного в 8 пункте" +
-                                          " отрицательного элемента, подсчитать количество сравнений");
+                        Console.WriteLine("\nВыбран поиск методом «Бинарный поиск» найденного в 8 пункте" +
+                                          " отрицательного элемента, подсчитать количество сравнений\n");
                         if (firstNeg >= 0 || arr.Length == 0)
                         {
-                            Console.WriteLine("Сначала нужно найти этот элемент!");
+                            Console.WriteLine("\nСначала нужно найти этот элемент!\n");
                         }
                         else
                         {
@@ -193,24 +195,24 @@ namespace HT_Lab4_26_30
                             switch (pos)
                             {
                                 case >= 0:
-                                    Console.WriteLine($"Искомый элемент = {firstNeg}\n" +
+                                    Console.WriteLine($"\nИскомый элемент = {firstNeg}\n" +
                                                       $"Позиция найденного элемента = {pos}\n" +
-                                                      $"Количество сравнений = {count}");
+                                                      $"Количество сравнений = {count}\n");
                                     break;
-                                case -1:
-                                    Console.WriteLine("Массив не содержит отрицательных элементов");
+                                case -2:
+                                    Console.WriteLine("\nЭлемент не найден\n");
                                     break;
                             }
                         }
 
                         break;
                     case "11":
-                        Console.WriteLine("Завершение программы...");
+                        Console.WriteLine("\nЗавершение программы...\n");
                         n = 0;
                         return;
                     default:
-                        Console.WriteLine("Введен неизвестный символ!" +
-                                          " Продолжение выполнения...");
+                        Console.WriteLine("\nВведен неизвестный символ!" +
+                                          " Продолжение выполнения...\n");
                         break;
                 }
             } while (true);
@@ -367,19 +369,21 @@ namespace HT_Lab4_26_30
                         rightIndex = pivotIndex;
 
                     count++;
-                } while (leftIndex != rightIndex);
+                } while (leftIndex < rightIndex);
 
+
+                if (leftIndex != rightIndex) return -2;
                 count++;
                 if (arrayInts[leftIndex] == findElem)
                     return leftIndex + 1;
 
                 // Элемент не найден
-                return -1;
+                return -2;
             }
 
             // Массив не отсортирован
             Console.WriteLine("Сначала нужно отсортировать массив!");
-            return -2;
+            return int.MinValue;
         }
 
         #endregion
