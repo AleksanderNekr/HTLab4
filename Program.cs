@@ -99,14 +99,26 @@ namespace HT_Lab4_26_30
                         var average = Average(arr);
                         Console.WriteLine("Выбрано удаление элементов, больших" +
                                           $" среднего арифметического элементов массива = {average}");
-                        DeleteGreaterThanNum(ref arr, average);
+
+                        if (arr.Length > 0)
+                            DeleteGreaterThanNum(ref arr, average);
+                        else
+                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
                         break;
                     case "5":
                         Console.WriteLine("Выбрано добавить К элементов в конец массива вручную");
                         ReadSize(out k);
                         arrAdd = ReadArray(k);
-                        Console.Write("Элементы: ");
-                        WriteArray(arrAdd);
+                        if (k > 0)
+                        {
+                            Console.Write("Элементы: ");
+                            WriteArray(arrAdd);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Дополнительных элементов нет!");
+                        }
+
                         arr = Concat(arr, arrAdd);
                         break;
                     case "6":
@@ -114,33 +126,64 @@ namespace HT_Lab4_26_30
                                           "датчика случайных чисел");
                         ReadSize(out k);
                         arrAdd = GenerateArray(k);
-                        Console.Write("Элементы: ");
-                        WriteArray(arrAdd);
+                        if (k > 0)
+                        {
+                            Console.Write("Элементы: ");
+                            WriteArray(arrAdd);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Дополнительных элементов нет!");
+                        }
+
                         arr = Concat(arr, arrAdd);
                         break;
                     case "7":
                         Console.WriteLine("Выбрано поменять местами элементы с четными и нечетными номерами");
-                        SwapEvenOddIndex(ref arr);
+                        if (arr.Length > 0)
+                        {
+                            SwapEvenOddIndex(ref arr);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                        }
+
                         break;
                     case "8":
                         Console.WriteLine("Выбрано найти первый отрицательный элемент," +
                                           " подсчитать количество сравнений");
-                        firstNeg = SearchFirstNegat(arr, out count);
-                        if (firstNeg == 1)
-                            Console.WriteLine("Последовательность не содержит отрицательных элементов!");
+                        if (arr.Length > 0)
+                        {
+                            firstNeg = SearchFirstNegat(arr, out count);
+                            if (firstNeg == 1)
+                                Console.WriteLine("Последовательность не содержит отрицательных элементов!");
+                            else
+                                Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
+                                                  $"Количество сравнений = {count}");
+                        }
                         else
-                            Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
-                                              $"Количество сравнений = {count}");
+                        {
+                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                        }
+
 
                         break;
                     case "9":
                         Console.WriteLine("Выбрано отсортировать массив методом «Простое включение»");
-                        Sort(ref arr);
+                        if (arr.Length > 0)
+                        {
+                            Sort(ref arr);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Нельзя выполнить, так как массив пустой!");
+                        }
                         break;
                     case "10":
                         Console.WriteLine("Выбран поиск методом «Бинарный поиск» найденного в 8 пункте" +
                                           " отрицательного элемента, подсчитать количество сравнений");
-                        if (firstNeg >= 0)
+                        if (firstNeg >= 0 || arr.Length == 0)
                         {
                             Console.WriteLine("Сначала нужно найти этот элемент!");
                         }
