@@ -113,7 +113,7 @@ namespace HT_Lab4_26_30
                         }
                         else
                         {
-                            Console.WriteLine("\nДополнительных элементов нет!\n");
+                            Console.WriteLine("\nМассив отсается прежним\n");
                         }
 
                         arr = Concat(arr, arrAdd);
@@ -130,7 +130,7 @@ namespace HT_Lab4_26_30
                         }
                         else
                         {
-                            Console.WriteLine("\nДополнительных элементов нет!\n");
+                            Console.WriteLine("\nМассив остается прежним\n");
                         }
 
                         arr = Concat(arr, arrAdd);
@@ -154,7 +154,7 @@ namespace HT_Lab4_26_30
                         {
                             firstNeg = SearchFirstNegat(arr, out count);
                             if (firstNeg == 1)
-                                Console.WriteLine("Последовательность не содержит отрицательных элементов!\n");
+                                Console.WriteLine("Элемент не найден!\n");
                             else
                                 Console.WriteLine($"Первый отрицательный = {firstNeg}\n" +
                                                   $"Количество сравнений = {count}\n");
