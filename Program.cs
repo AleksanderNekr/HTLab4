@@ -45,6 +45,9 @@ namespace HT_Lab4_26_30
             } while (true);
         }
 
+        /// <summary>
+        ///     Главное меню программы.
+        /// </summary>
         private static void MainMenu(int[] arr, out uint n)
         {
             var firstNeg = 0;
