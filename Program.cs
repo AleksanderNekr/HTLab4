@@ -21,7 +21,7 @@ namespace HT_Lab4_26_30
                               "\n3) Завершить исполнение программы");
             do
             {
-                Console.Write("\nВаш выбор: ");
+                Console.Write("Ваш выбор: ");
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
