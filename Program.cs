@@ -136,7 +136,7 @@ namespace HT_Lab4_26_30
                         Console.WriteLine("\nВыбрано поменять местами элементы с четными и нечетными номерами\n");
                         if (arr.Length > 0)
                         {
-                            SwapEvenOddIndex(ref arr);
+                            SwapEvenOddIndex(arr);
                         }
                         else
                         {
@@ -167,7 +167,7 @@ namespace HT_Lab4_26_30
                         Console.WriteLine("\nВыбрано отсортировать массив методом «Простое включение»\n");
                         if (arr.Length > 0)
                         {
-                            Sort(ref arr);
+                            Sort(arr);
                         }
                         else
                         {
@@ -295,9 +295,9 @@ namespace HT_Lab4_26_30
         ///     Перестановка элементов с четными и нечетными индексами
         ///     в массиве <see cref="T:System.Int32" /> значений .
         /// </summary>
-        private static void SwapEvenOddIndex(ref int[] arrayInts)
+        private static void SwapEvenOddIndex(IList<int> arrayInts)
         {
-            for (var i = 1; i < arrayInts.Length; i += 2)
+            for (var i = 1; i < arrayInts.Count; i += 2)
             {
                 var tmp = arrayInts[i];
                 arrayInts[i] = arrayInts[i - 1];
@@ -327,9 +327,9 @@ namespace HT_Lab4_26_30
         ///     Сортировка массива <see cref="T:System.Int32" /> значений
         ///     методом «Простое включение».
         /// </summary>
-        private static void Sort(ref int[] arrayInts)
+        private static void Sort(IList<int> arrayInts)
         {
-            for (var i = 1; i < arrayInts.Length; i++)
+            for (var i = 1; i < arrayInts.Count; i++)
             {
                 var tmp = arrayInts[i];
                 var j = i - 1;
