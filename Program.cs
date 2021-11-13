@@ -5,13 +5,6 @@ namespace HT_Lab4_26_30
 {
     internal static class Program
     {
-        private static void Main()
-        {
-            FirstMenu(out var arr, out _);
-            MainMenu(arr, out _);
-        }
-
-        // TODO: нормальную реакцию функций на пустой массив
 
         #region Функции
 
@@ -475,5 +468,12 @@ namespace HT_Lab4_26_30
         #endregion
 
         #endregion
+
+        private static void Main()
+        {
+            FirstMenu(out var arr, out _);
+            MainMenu(arr, out _);
+        }
+
     }
 }
