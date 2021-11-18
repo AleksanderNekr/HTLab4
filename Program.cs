@@ -125,7 +125,7 @@ namespace HT_Lab4_26_30
                         }
                         else
                         {
-                            Console.WriteLine("Массив отсается прежним");
+                            Console.WriteLine("Исходный массив отсается прежним");
                         }
 
                         arr = Concat(arr, arrAdd);
@@ -142,7 +142,7 @@ namespace HT_Lab4_26_30
                         }
                         else
                         {
-                            Console.WriteLine("Массив остается прежним");
+                            Console.WriteLine("Исходный массив остается прежним");
                         }
 
                         arr = Concat(arr, arrAdd);
@@ -368,7 +368,7 @@ namespace HT_Lab4_26_30
                     else
                         rightIndex = pivotIndex;
 
-                    count++;
+                    count+=2;
                 } while (leftIndex < rightIndex);
 
 
